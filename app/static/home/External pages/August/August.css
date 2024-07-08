@@ -1,0 +1,16 @@
+
+*{
+    padding: 0;
+    margin: 0;
+} 
+body{
+    height: 100vh;
+    width: 100%;
+}
+#icon-add{
+    position:fixed;
+    bottom: 0;
+    margin-bottom: 100px;
+    margin-left: 50px;
+
+}

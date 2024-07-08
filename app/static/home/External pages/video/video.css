@@ -1,0 +1,48 @@
+
+*{
+    padding: 0;
+    margin: 0;
+} 
+body{
+    height: 100vh;
+    width: 100%;
+}
+
+
+#icon-add{
+    position:fixed;
+    bottom: 0;
+    margin-bottom: 100px;
+    margin-left: 50px;
+
+}
+#icon-add-notifications{
+    position:fixed;
+    bottom: 0;
+    margin-bottom: 30px;
+    margin-left: 30px;
+}
+
+
+
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+th,td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#data {
+    margin-bottom: 10px;
+}
+
+#data input, button {
+    padding: 10px;
+    width: 90px;
+}
