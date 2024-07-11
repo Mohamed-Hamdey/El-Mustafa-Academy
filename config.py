@@ -1,6 +1,8 @@
 import os
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://M-HAMDY\\PC/El-Moustafadb?driver=ODBC+Driver+17+for+SQL+Server&Trusted_Connection=yes'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'your-secret-key'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = os.urandom(24)

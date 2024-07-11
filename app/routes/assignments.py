@@ -94,3 +94,12 @@ def delete_assignment(assignment_id):
     db.session.delete(assignment)
     db.session.commit()
     return jsonify({'message': 'Assignment deleted successfully'}), 200
+
+@bp.errorhandler(404)
+def not_found_error(error):
+    return jsonify({'message': 'Resource not found'}), 404
+
+@bp.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return jsonify({'message': 'An internal error occurred'}), 500
