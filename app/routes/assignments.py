@@ -48,7 +48,7 @@ def create_assignment():
     db.session.add(assignment)
     db.session.commit()
     return jsonify({'message': 'Assignment created successfully', 'id': assignment.id}), 201
-
+    return render_templete("")
 @bp.route('/assignments/<int:assignment_id>', methods=['GET'])
 @login_required
 def get_assignment(assignment_id):

@@ -16,3 +16,4 @@ def register_blueprints(app):
     app.register_blueprint(environment_bp)
     app.register_blueprint(schedule_bp)
     app.register_blueprint(notifications_bp)
+

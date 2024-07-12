@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>El-Mustafa Academy</title>
-  <link rel="stylesheet" href="/app/static/login/stud-Login.css">
-  <link rel="stylesheet" href="/app/static/login/css/bootstrap.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='login/stud-Login.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='login/css/bootstrap.css') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=El+Messiri:wght@400..700&display=swap" rel="stylesheet">
@@ -18,14 +18,16 @@
 
   <!-- Navbar -->
   <nav class="navbar navbar-light bg-light">
-    <div style="display: flex;gap: 20px;">
-      <a href="/app/templetes/stud-Login.html"><img id="img-nav" src="/app/static/img/3MS.png" alt=""></a>
+    <div style="display: flex; gap: 20px;">
+      <a href="/app/templetes/stud-Login.html">
+        <img id="img-nav" src="{{ url_for('static', filename='img/3MS.png') }}" alt="">
+      </a>
       <div class="dropdown">
-        <button style="margin-top:7px;width: 310px;border-radius: 8px;" class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button style="margin-top: 7px; width: 310px; border-radius: 8px;" class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           خبرات سابقه 
         </button>
         <ul style="text-align: right;" class="dropdown-menu dropdown-menu-dark">
-          <li><a class="dropdown-item " href="#">معلم أول (أ) احياء وجيولوجيا بمدرسة : ــ</a></li>
+          <li><a class="dropdown-item" href="#">معلم أول (أ) احياء وجيولوجيا بمدرسة : ــ</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" href="#">الحرية الثانوية المشتركة  المنيا - دمشير</a></li>
           <li><a class="dropdown-item" href="#">عبد الجابر محمد على  المشتركة - المنيا طوة</a></li>
@@ -34,6 +36,7 @@
         </ul>
       </div>
     </div>
+    
 
     <form style="position: relative;" id="form-nav" class="form-inline">
       <button id="button-nav1" class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">تسجيل دخول</button>
@@ -74,11 +77,11 @@
 
 
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label">your email:</label>
-              <input class="form-control" id="recipient-name" type="email" placeholder="islam25@gmail.com">
+              <label for="recipient-name" class="col-form-label">Email:</label>
+              <input class="form-control" id="recipient-name" type="email" placeholder="account@gmail.com">
             </div>
             <div class="form-group">
-              <label for="message-text" class="col-form-label">password:</label>
+              <label for="message-text" class="col-form-label">Password:</label>
               <input class="form-control" id="message-text" type="password" placeholder="**************">
             </div>
           </form>
@@ -87,7 +90,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <a href="/app/templetes/stud-home.html">
-            <button type="button" class="btn btn-primary">Send your data</button>
+            <button type="button" class="btn btn-primary">Submit</button>
           </a>
           
         </div>
@@ -125,20 +128,20 @@
             </div>
             
             <div class="form-group">
-              <label for="message-text" class="col-form-label">your name:</label>
+              <label for="message-text" class="col-form-label">Name:</label>
               <input class="form-control" id="message-text" type="text" placeholder="your name">
             </div>
             <div class="form-group">
-              <label for="message-text" class="col-form-label">Your phone number:</label>
+              <label for="message-text" class="col-form-label">Phone number:</label>
               <input class="form-control" id="message-text" type="tel" placeholder="010300*****">
             </div>
 
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label">your email:</label>
+              <label for="recipient-name" class="col-form-label">Email:</label>
               <input class="form-control" id="recipient-name" type="email" placeholder="account@gmail.com">
             </div>
             <div class="form-group">
-              <label for="message-text" class="col-form-label">password:</label>
+              <label for="message-text" class="col-form-label">Password:</label>
               <input class="form-control" id="message-text" type="password" placeholder="**************">
             </div>
           </form>
@@ -147,7 +150,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <a href="/app/templetes/stud-home.html">
-            <button type="button" class="btn btn-primary">Send your data</button>
+            <button type="button" class="btn btn-primary">Submit</button>
           </a>
           
         </div>
@@ -158,7 +161,7 @@
 
   <!-- big img  -->
   <div class="contaner">
-    <img style="width:100%;height:72vh;" src="/app/static/img/Academy3.gif" alt="">
+    <img style="width:100%;height:72vh;" src="{{ url_for('static', filename='img/Academy3.gif') }}" alt="">
     <div style="margin-left: 20px;">
       
    <!-- links -->
@@ -368,9 +371,9 @@
 
   
 
-  <script src="/app/static/login/js/popper.min.js"></script>
-  <script src="/app/static/login/js/jquery-3.7.1.min.js"></script>
-  <script src="/app/static/login/js/bootstrap.js"></script>
-  <script src="/app/static/login/stud-Login.js"></script>
+<script src="{{ url_for('static', filename='login/js/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='login/js/jquery-3.7.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='login/js/bootstrap.js') }}"></script>
+<script src="{{ url_for('static', filename='login/stud-Login.js') }}"></script>
 </body>
 </html> 
