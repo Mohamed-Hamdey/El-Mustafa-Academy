@@ -16,6 +16,13 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+class Subject(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        return f'<Subject {self.name}>'
+
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -100,3 +107,17 @@ class StudentProgress(db.Model):
     course = db.relationship('Course', backref='progress_records')
     assignment = db.relationship('Assignment', backref='progress_records')
     exam = db.relationship('Exam', backref='progress_records')
+
+class Grade(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'), nullable=False)  # Ensure 'subject' is defined
+    term = db.Column(db.Enum('first', 'second', 'third', name='term_types'), nullable=False)
+    grade_value = db.Column(db.Float, nullable=False)
+    comments = db.Column(db.Text)
+    date_recorded = db.Column(db.DateTime, default=datetime.utcnow)
+    student = db.relationship('User', backref='grades')
+    subject = db.relationship('Subject', backref='grades')
+
+    def __repr__(self):
+        return f'<Grade {self.id}: Student {self.student_id}, Subject {self.subject_id}, Term {self.term}>'

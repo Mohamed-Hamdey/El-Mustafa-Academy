@@ -44,120 +44,84 @@
     </form>
   </nav>
 
-  <!-- popu 1 -->
-
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Enter your data</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-          <form>
-
-            <div class="dropdown">
-              <button style="margin-left: 35%;width: 160px;" class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                اختر المرحله اولا
-              </button>
-              <ul style="text-align: right;" class="dropdown-menu dropdown-menu-dark">
-
-                <li><a class="dropdown-item " href="/app/templetes/first-Login.html">الاول الثانوي</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item " href="/app/templetes/second-Login.html">الثاني الثانوي</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item " href="/app/templetes/third-Login.html">الثالث الثانوي</a></li>
-
-              </ul>
-            </div>
-            
-
-
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Email:</label>
-              <input class="form-control" id="recipient-name" type="email" placeholder="account@gmail.com">
-            </div>
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Password:</label>
-              <input class="form-control" id="message-text" type="password" placeholder="**************">
-            </div>
-          </form>
-          
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <a href="/app/templetes/stud-home.html">
-            <button type="button" class="btn btn-primary">Submit</button>
-          </a>
-          
-        </div>
+ <!-- Login Modal -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Sign in: </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-username" class="col-form-label">Username:</label>
+            <input class="form-control" id="login-username" type="text" placeholder="User_name" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password" class="col-form-label">Password:</label>
+            <input class="form-control" id="login-password" type="password" placeholder="**************" required>
+          </div>
+          <div class="alert alert-danger d-none" id="login-error" role="alert"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="login-submit">Submit</button>
       </div>
     </div>
   </div>
+</div>
   
-  <!-- popu 2 -->
-
-  <div class="modal fade" id="buttom-2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Enter your data</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-          <form>
-            <div class="dropdown">
-              <button style="margin-left: 35%;width: 160px;" class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                اختر المرحله اولا
-              </button>
-              <ul style="text-align: right;" class="dropdown-menu dropdown-menu-dark">
-
-                <li><a class="dropdown-item " href="/app/templetes/first-Login.html">الاول الثانوي</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item " href="/app/templetes/second-Login.html">الثاني الثانوي</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item " href="/app/templetes/third-Login.html">الثالث الثانوي</a></li>
-
-              </ul>
-            </div>
-            
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Name:</label>
-              <input class="form-control" id="message-text" type="text" placeholder="your name">
-            </div>
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Phone number:</label>
-              <input class="form-control" id="message-text" type="tel" placeholder="010300*****">
-            </div>
-
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Email:</label>
-              <input class="form-control" id="recipient-name" type="email" placeholder="account@gmail.com">
-            </div>
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Password:</label>
-              <input class="form-control" id="message-text" type="password" placeholder="**************">
-            </div>
-          </form>
-          
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <a href="/app/templetes/stud-home.html">
-            <button type="button" class="btn btn-primary">Submit</button>
-          </a>
-          
-        </div>
+ <!-- Registration Modal -->
+ <div class="modal fade" id="buttom-2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Sign up: </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="register-form">
+          <div class="form-group">
+            <label for="register-username" class="col-form-label">Username:</label>
+            <input class="form-control" id="register-username" type="text" placeholder="User_name" required>
+          </div>
+          <div class="form-group">
+            <label for="register-stage" class="col-form-label">Grade:</label>
+            <select class="form-control" id="register-stage" required>
+              <option value="">اختر المرحلة</option>
+              <option value="first">الاول الثانوي</option>
+              <option value="second">الثاني الثانوي</option>
+              <option value="third">الثالث الثانوي</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="register-phone-number" class="col-form-label">Phone number:</label>
+            <input class="form-control" id="register-phone-number" type="tel" placeholder="0123456789" required>
+          </div>
+          <div class="form-group">
+            <label for="register-email" class="col-form-label">Email:</label>
+            <input class="form-control" id="register-email" type="email" placeholder="account@gmail.com" required>
+          </div>
+          <div class="form-group">
+            <label for="register-password" class="col-form-label">Password:</label>
+            <input class="form-control" id="register-password" type="password" placeholder="**************" required>
+          </div>
+          <div class="alert alert-danger d-none" id="register-error" role="alert"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="register-submit">Submit</button>
       </div>
     </div>
   </div>
-
+</div>
 
   <!-- big img  -->
   <div class="contaner">
@@ -207,20 +171,71 @@
         ><i class="fab fa-instagram"></i
       ></a>
    
-      <!-- Linkedin -->
-      <a
-        data-mdb-ripple-init
-        class="btn text-white btn-floating m-1"
-        style="background-color: #0082ca;"
-        href="#!"
-        role="button"
-        ><i class="fab fa-linkedin-in"></i
-      ></a>
-       </div>
+
     </div>
   </div>
 
 
+  <script>
+    // Login functionality
+    document.getElementById('login-submit').addEventListener('click', async () => {
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+
+        const response = await fetch('/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            window.location.href = data.redirect; // Redirect to home
+        } else {
+            document.getElementById('login-error').innerText = data.message;
+            document.getElementById('login-error').classList.remove('d-none');
+        }
+    });
+
+    // Registration functionality
+    document.getElementById('register-submit').addEventListener('click', async () => {
+        const username = document.getElementById('register-username').value;
+        const stage = document.getElementById('register-stage').value;
+        const phoneNumber = document.getElementById('register-phone-number').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+
+        const response = await fetch('/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                username,
+                email,
+                password,
+                user_type: stage 
+            })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert('User registered successfully');
+            window.location.href = data.redirect; // Redirect to home page
+        } else {
+            document.getElementById('register-error').innerText = data.message;
+            document.getElementById('register-error').classList.remove('d-none');
+        }
+    });
+</script>
+
+
+
+  
+  
+  
 
 
 

@@ -6,6 +6,7 @@ from app.routes.videos import bp as videos_bp
 from app.routes.enviroment import bp as environment_bp
 from app.routes.schedule import bp as schedule_bp
 from app.routes.notifications import bp as notifications_bp
+from app.routes.grades import bp as grades_bp
 
 def register_blueprints(app):
     app.register_blueprint(auth_bp)
@@ -16,4 +17,5 @@ def register_blueprints(app):
     app.register_blueprint(environment_bp)
     app.register_blueprint(schedule_bp)
     app.register_blueprint(notifications_bp)
+    app.register_blueprint(grades_bp, url_prefix='/grades')
 

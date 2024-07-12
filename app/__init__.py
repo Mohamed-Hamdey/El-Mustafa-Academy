@@ -33,9 +33,7 @@ def create_app():
     # Main route
     @app.route('/')
     def index():
-        return render_template('stud-Login.html')
+        return render_template('Login.html')
 
     return app
 
-# # Import models at the end to avoid circular imports
-# from app import models
