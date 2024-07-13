@@ -2,162 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>video-page</title>
-    <link rel="stylesheet" href="/app/static/External/video/css/bootstrap.css">
-    <link rel="stylesheet" href="/app/static/External/video/video.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>Videos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='External/video/css/bootstrap.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-
 </head>
 <body>
     <!-- navbar -->
     <nav style="width: 100%; position:fixed;background-color: #232323;" class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand ml-1" href="/app/templetes/stud-home.html">
-          <img style="width:130px;height:50px;margin-left: 30px;" src="/app/static/img/3MS copy.png" alt="">
+        <a class="navbar-brand" href="/app/templetes/teacher-home.html">
+            <img style="width:130px;height:50px;margin-left: 30px;" src="{{ url_for('static', filename='img/3MS copy.png') }}" alt="">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll">
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarScroll">
-            <ul class="navbar-nav ms-auto my-2 mr-3 my-lg-0 navbar-nav-scroll" style="max-height: 100px;">
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item active">
-                  <a id="" class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample"  aria-controls="offcanvasExample" >اشعارات <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/app/templetes/teacher/notifications.html">اشعارات</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/External_pages/pursuit.html">متابعة ولي الامر <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/app/templetes/teacher/students.html">الطلاب</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/External_pages/Exam.html">امتحانات <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/app/templetes/teacher/exams.html">امتحانات</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/External_pages/Homework.html">واجب اليوم <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/app/templetes/teacher/homework.html">واجب اليوم</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/External_pages/video.html">فيديو <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/app/templetes/teacher/videos.html">فيديو</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/stud-home.html">الصفحه الرئيسيه<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/app/templetes/teacher/home.html">الصفحه الرئيسيه</a>
                 </li>
             </ul>
-
         </div>
     </nav>
-    
 
-     <!-- notifications  -->
-     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-      <div class="offcanvas-header">
-        <h3 class="offcanvas-title" id="offcanvasExampleLabel">Notifications..</h3>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
+    <div class="container mt-5">
+        <h1>فيديوهات</h1>
+        {% for video in videos %}
+            <div class="video-item">
+                <h2>{{ video.title }}</h2>
+                <video width="600" controls>
+                    <source src="{{ video.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>{{ video.description }}</p>
+                {% if current_user.user_type == 'Teacher' %}
+                    <div class="mt-3">
+                        <a href="{{ url_for('videos.update_video', video_id=video.id) }}" class="btn btn-warning">تعديل الفيديو</a>
+                        <form action="{{ url_for('videos.delete_video', video_id=video.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">حذف الفيديو</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
 
-      </div>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
     <!-- Footer -->
-    <footer style="position: absolute;bottom: 0;width: 100%;" class="text-center bg-body-tertiary">
-        <!-- Grid container -->
+    <footer class="text-center bg-body-tertiary">
         <div class="container pt-4">
-          <!-- Section: Social media -->
-          <section class="mb-4">
-            <!-- Facebook -->
-            <a
-              data-mdb-ripple-init
-              class="btn btn-link btn-floating btn-lg text-body m-1"
-              href="https://www.facebook.com/profile.php?id=100003632809846&mibextid=ZbWKwL"
-              role="button"
-              data-mdb-ripple-color="dark"
-              ><i class="fab fa-facebook-f"></i
-            ></a>
-      
-            <!--  -->
-            <a
-              data-mdb-ripple-init
-              class="btn btn-link btn-floating btn-lg text-body m-1"
-              href="https://www.youtube.com/@user-xu3zr4lq5f"
-              role="button"
-              data-mdb-ripple-color="dark"
-              ><i class="fab fa-youtube"></i
-            ></a>
-      
-      
-            <!-- Google -->
-            <a
-              data-mdb-ripple-init
-              class="btn btn-link btn-floating btn-lg text-body m-1"
-              href="#!"
-              role="button"
-              data-mdb-ripple-color="dark"
-              ><i class="fab fa-google"></i
-            ></a>
-      
-            <!-- Instagram -->
-            <a
-              data-mdb-ripple-init
-              class="btn btn-link btn-floating btn-lg text-body m-1"
-              href="#!"
-              role="button"
-              data-mdb-ripple-color="dark"
-              ><i class="fab fa-instagram"></i
-            ></a>
-
-          </section>
-          <!-- Section: Social media -->
+            <section class="mb-4">
+                <a class="btn btn-link btn-floating btn-lg text-body m-1" href="#!" role="button"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-link btn-floating btn-lg text-body m-1" href="#!" role="button"><i class="fab fa-youtube"></i></a>
+                <a class="btn btn-link btn-floating btn-lg text-body m-1" href="#!" role="button"><i class="fab fa-google"></i></a>
+                <a class="btn btn-link btn-floating btn-lg text-body m-1" href="#!" role="button"><i class="fab fa-instagram"></i></a>
+            </section>
         </div>
-        <!-- Grid container -->
-      
-        <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-          © 2024 Copyright:
-          <a class="text-body" href="">Contact US</a>
+            © 2024 Copyright: <a class="text-body" href="">Contact US</a>
         </div>
-        <!-- Copyright -->
-      </footer>
+    </footer>
 
-
-    <script src="/app/static/External/video/js/popper.min.js"></script>
-    <script src="/app/static/External/video/js/jquery-3.7.1.min.js"></script>
-    <script src="/app/static/External/video/js/bootstrap.js"></script>
+    <script src="{{ url_for('static', filename='External/video/js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='External/video/js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='External/video/js/bootstrap.js') }}"></script>
 </body>
 </html>

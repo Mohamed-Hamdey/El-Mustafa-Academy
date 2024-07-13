@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from flask_login import login_required, current_user
 from app.models import Assignment, Course, db
 from datetime import datetime
@@ -48,7 +48,7 @@ def create_assignment():
     db.session.add(assignment)
     db.session.commit()
     return jsonify({'message': 'Assignment created successfully', 'id': assignment.id}), 201
-    
+
 @bp.route('/assignments/<int:assignment_id>', methods=['GET'])
 @login_required
 def get_assignment(assignment_id):
@@ -95,11 +95,16 @@ def delete_assignment(assignment_id):
     db.session.commit()
     return jsonify({'message': 'Assignment deleted successfully'}), 200
 
+@bp.route('/assignments/page', methods=['GET'])
+@login_required
+def assignments_page():
+    return render_template('External_pages/assignments.html')
+
 @bp.errorhandler(404)
 def not_found_error(error):
-    return jsonify({'message': 'Resource not found'}), 404
+    return render_template('error/404.html')
 
 @bp.errorhandler(500)
 def internal_error(error):
     db.session.rollback()
-    return jsonify({'message': 'An internal error occurred'}), 500
+    return render_template('error/500.html')

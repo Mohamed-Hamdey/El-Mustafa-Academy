@@ -3,12 +3,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
 
-class User(UserMixin, db.Model):
+class User(db.Model, UserMixin):
+    __tablename__ = 'users'
+
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
-    user_type = db.Column(db.String(20))
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    user_type = db.Column(db.String(50), nullable=False)
+    stage = db.Column(db.String(50), nullable=True)
+    phone_number = db.Column(db.String(15), nullable=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -62,6 +66,8 @@ class Video(db.Model):
     description = db.Column(db.Text)
     url = db.Column(db.String(255), nullable=False)
     upload_date = db.Column(db.DateTime, default=datetime.utcnow)
+    views = db.Column(db.Integer, default=0)  # Track views
+    max_views = db.Column(db.Integer, default=3)  # Limit of views
     course = db.relationship('Course', backref='videos')
 
 class EnvironmentTopic(db.Model):

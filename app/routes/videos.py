@@ -1,9 +1,16 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template, url_for
 from flask_login import login_required, current_user
 from app.models import Video, Course, db
-from datetime import datetime
 
 bp = Blueprint('videos', __name__)
+
+@bp.route('/videos/page', methods=['GET'])
+@login_required
+def video_page():
+    if current_user.user_type == 'Teacher':
+        return teacher_dashboard()
+    else:  # Student
+        return student_video_page()
 
 @bp.route('/videos', methods=['GET'])
 @login_required
@@ -24,19 +31,20 @@ def get_videos():
         'title': v.title,
         'description': v.description,
         'url': v.url,
-        'upload_date': v.upload_date.isoformat()
+        'upload_date': v.upload_date.isoformat(),
+        'video_page': url_for('videos.get_video', video_id=v.id)  # Change to get_video
     } for v in videos]), 200
 
-@bp.route('/videos', methods=['POST'])
+@bp.route('/videos/create', methods=['POST'])
 @login_required
 def create_video():
     if current_user.user_type != 'Teacher':
-        return jsonify({'message': 'Only teachers can upload videos'}), 403
+        return render_template('error/403.html')
 
     data = request.get_json()
     course = Course.query.get_or_404(data['course_id'])
     if course.teacher_id != current_user.id:
-        return jsonify({'message': 'You can only upload videos to your own courses'}), 403
+        return render_template('error/403.html')
 
     video = Video(
         course_id=data['course_id'],
@@ -52,6 +60,12 @@ def create_video():
 @login_required
 def get_video(video_id):
     video = Video.query.get_or_404(video_id)
+    if video.views >= video.max_views:
+        return render_template('error/403.html')
+
+    video.views += 1
+    db.session.commit()
+    
     return jsonify({
         'id': video.id,
         'course_id': video.course_id,
@@ -61,15 +75,15 @@ def get_video(video_id):
         'upload_date': video.upload_date.isoformat()
     }), 200
 
-@bp.route('/videos/<int:video_id>', methods=['PUT'])
+@bp.route('/videos/<int:video_id>/update', methods=['PUT'])
 @login_required
 def update_video(video_id):
     if current_user.user_type != 'Teacher':
-        return jsonify({'message': 'Only teachers can update videos'}), 403
+        return render_template('error/403.html')
 
     video = Video.query.get_or_404(video_id)
     if video.course.teacher_id != current_user.id:
-        return jsonify({'message': 'You can only update your own videos'}), 403
+        return render_template('error/403.html')
 
     data = request.get_json()
     video.title = data.get('title', video.title)
@@ -79,16 +93,31 @@ def update_video(video_id):
     db.session.commit()
     return jsonify({'message': 'Video updated successfully'}), 200
 
-@bp.route('/videos/<int:video_id>', methods=['DELETE'])
+@bp.route('/videos/<int:video_id>/delete', methods=['DELETE'])
 @login_required
 def delete_video(video_id):
     if current_user.user_type != 'Teacher':
-        return jsonify({'message': 'Only teachers can delete videos'}), 403
+        return render_template('error/403.html')
 
     video = Video.query.get_or_404(video_id)
     if video.course.teacher_id != current_user.id:
-        return jsonify({'message': 'You can only delete your own videos'}), 403
+        return render_template('error/403.html')
 
     db.session.delete(video)
     db.session.commit()
     return jsonify({'message': 'Video deleted successfully'}), 200
+
+@bp.route('/teacher/dashboard', methods=['GET'])
+@login_required
+def teacher_dashboard():
+    if current_user.user_type != 'Teacher':
+        return render_template('error/403.html')
+
+    courses = Course.query.filter_by(teacher_id=current_user.id).all()
+    return render_template('dashboard.html', courses=courses)
+
+@bp.route('/student/videos', methods=['GET'])
+@login_required
+def student_video_page():
+    videos = [v for e in current_user.enrollments for v in e.course.videos]
+    return render_template('External_pages/video.html', videos=videos)

@@ -44,27 +44,34 @@
     </form>
   </nav>
 
- <!-- Login Modal -->
- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Login Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Sign in: </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <h5 class="modal-title">Sign In</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-        <form id="login-form">
+        <form id="login-form" novalidate>
           <div class="form-group">
-            <label for="login-username" class="col-form-label">Username:</label>
+            <label for="login-username">Username:</label>
             <input class="form-control" id="login-username" type="text" placeholder="User_name" required>
           </div>
           <div class="form-group">
-            <label for="login-password" class="col-form-label">Password:</label>
+            <label for="login-password">Password:</label>
             <input class="form-control" id="login-password" type="password" placeholder="**************" required>
           </div>
-          <div class="alert alert-danger d-none" id="login-error" role="alert"></div>
+          <div class="form-group">
+            <label for="login-user-type">User Type:</label>
+            <div>
+              <input type="radio" id="login-user-type-student" name="user_type" value="Student" required>
+              <label for="login-user-type-student">Student</label>
+              <input type="radio" id="login-user-type-teacher" name="user_type" value="Teacher" required>
+              <label for="login-user-type-teacher">Teacher</label>
+            </div>
+          </div>
+          <div class="alert alert-danger d-none" id="login-error"></div>
         </form>
       </div>
       <div class="modal-footer">
@@ -74,25 +81,23 @@
     </div>
   </div>
 </div>
-  
- <!-- Registration Modal -->
- <div class="modal fade" id="buttom-2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<!-- Registration Modal -->
+<div class="modal fade" id="buttom-2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Sign up: </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <h5 class="modal-title">Sign Up</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-        <form id="register-form">
+        <form id="register-form" novalidate>
           <div class="form-group">
-            <label for="register-username" class="col-form-label">Username:</label>
+            <label for="register-username">Username:</label>
             <input class="form-control" id="register-username" type="text" placeholder="User_name" required>
           </div>
           <div class="form-group">
-            <label for="register-stage" class="col-form-label">Grade:</label>
+            <label for="register-stage">Grade:</label>
             <select class="form-control" id="register-stage" required>
               <option value="">اختر المرحلة</option>
               <option value="first">الاول الثانوي</option>
@@ -101,18 +106,27 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="register-phone-number" class="col-form-label">Phone number:</label>
+            <label for="register-phone-number">Phone Number:</label>
             <input class="form-control" id="register-phone-number" type="tel" placeholder="0123456789" required>
           </div>
           <div class="form-group">
-            <label for="register-email" class="col-form-label">Email:</label>
+            <label for="register-email">Email:</label>
             <input class="form-control" id="register-email" type="email" placeholder="account@gmail.com" required>
           </div>
           <div class="form-group">
-            <label for="register-password" class="col-form-label">Password:</label>
+            <label for="register-password">Password:</label>
             <input class="form-control" id="register-password" type="password" placeholder="**************" required>
           </div>
-          <div class="alert alert-danger d-none" id="register-error" role="alert"></div>
+          <div class="form-group">
+            <label for="register-user-type">User Type:</label>
+            <div>
+              <input type="radio" id="register-user-type-student" name="user_type" value="Student" required>
+              <label for="register-user-type-student">Student</label>
+              <input type="radio" id="register-user-type-teacher" name="user_type" value="Teacher" required>
+              <label for="register-user-type-teacher">Teacher</label>
+            </div>
+          </div>
+          <div class="alert alert-danger d-none" id="register-error"></div>
         </form>
       </div>
       <div class="modal-footer">
@@ -122,6 +136,8 @@
     </div>
   </div>
 </div>
+
+
 
   <!-- big img  -->
   <div class="contaner">
@@ -177,116 +193,79 @@
 
 
   <script>
-    // Login functionality
-    document.getElementById('login-submit').addEventListener('click', async () => {
-        const username = document.getElementById('login-username').value;
-        const password = document.getElementById('login-password').value;
-
-        const response = await fetch('/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, password })
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-            window.location.href = data.redirect; // Redirect to home
-        } else {
-            document.getElementById('login-error').innerText = data.message;
-            document.getElementById('login-error').classList.remove('d-none');
-        }
+    // Validate Registration Form
+    document.getElementById('register-form').addEventListener('input', function () {
+      const isValid = [...this.elements].every(input => input.checkValidity());
+      document.getElementById('register-submit').disabled = !isValid;
     });
 
     // Registration functionality
     document.getElementById('register-submit').addEventListener('click', async () => {
-        const username = document.getElementById('register-username').value;
-        const stage = document.getElementById('register-stage').value;
-        const phoneNumber = document.getElementById('register-phone-number').value;
-        const email = document.getElementById('register-email').value;
-        const password = document.getElementById('register-password').value;
+      const username = document.getElementById('register-username').value;
+      const stage = document.getElementById('register-stage').value;
+      const phoneNumber = document.getElementById('register-phone-number').value;
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+      const userType = document.querySelector('input[name="user_type"]:checked').value;
 
-        const response = await fetch('/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-                username,
-                email,
-                password,
-                user_type: stage 
-            })
-        });
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          user_type: userType,
+          stage,
+          phone_number: phoneNumber
+        })
+      });
 
-        const data = await response.json();
-        if (response.ok) {
-            alert('User registered successfully');
-            window.location.href = data.redirect; // Redirect to home page
-        } else {
-            document.getElementById('register-error').innerText = data.message;
-            document.getElementById('register-error').classList.remove('d-none');
-        }
+      const data = await response.json();
+      if (response.ok) {
+        alert('User registered successfully');
+        window.location.href = data.redirect;
+      } else {
+        document.getElementById('register-error').innerText = data.message;
+        document.getElementById('register-error').classList.remove('d-none');
+      }
     });
-</script>
 
+    // Validate Login Form
+    document.getElementById('login-form').addEventListener('input', function () {
+      const isValid = [...this.elements].every(input => input.checkValidity());
+      document.getElementById('login-submit').disabled = !isValid;
+    });
 
+    // Login functionality
+    document.getElementById('login-submit').addEventListener('click', async () => {
+      const username = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+      const userType = document.querySelector('input[name="user_type"]:checked').value;
 
-  
-  
-  
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          password,
+          user_type: userType
+        })
+      });
 
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      const data = await response.json();
+      if (response.ok) {
+        window.location.href = data.redirect;
+      } else {
+        document.getElementById('login-error').innerText = data.message;
+        document.getElementById('login-error').classList.remove('d-none');
+      }
+    });
+  </script>
 
 
 

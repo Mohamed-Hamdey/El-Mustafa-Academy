@@ -30,13 +30,13 @@
                     <a  class="nav-link" href="/app/templetes/External_pages/pursuit.html"target="_blank">متابعة ولي الامر <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/External_pages/Exam.html" target="_blank">امتحانات <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('exams.exams_page') }}" >امتحانات <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/External_pages/Homework.html" target="_blank">واجب اليوم <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('assignments.assignments_page') }}" >واجب اليوم <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/pagesvideo.html" target="_blank">فيديو <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('videos.video_page') }}" ">فيديو <span class="sr-only">(current)</span></a>
                 </li>
                 <li  class="nav-item active">
                     <a class="nav-link" href="">الصفحه الرئيسيه<span class="sr-only">(current)</span></a>
@@ -59,27 +59,32 @@
                     <p class="Quick-access-p">قم بتفعيل الاشعارات دائما</p>
                 </div>
             </a>
-            <a class="Quick-access-link" href="/app/templetes/External_pages/Exam.html"target="_blank" style="text-decoration: none;color: black;">
+            <a class="Quick-access-link" href="{{ url_for('exams.exams_page') }}" style="text-decoration: none;color: black;">
                 <div class="Quick-access-box">
                     <img class="Quick-access-img" src="{{ url_for('static', filename='img/exam.png') }}" alt="">
                     <h1 class="Quick-access-h1">امتحانات</h1>
                     <p class="Quick-access-p">امتحانات دوريه علي النظام الجديد</p>
                 </div>
             </a>
-            <a class="Quick-access-link" href="/app/templetes/External_pages/Homework.html"target="_blank" style="text-decoration: none;color: black;">
+            
+            <a class="Quick-access-link" href="{{ url_for('assignments.assignments_page') }}"  style="text-decoration: none; color: black;">
                 <div class="Quick-access-box">
                     <img class="Quick-access-img" src="{{ url_for('static', filename='img/homeWork.png') }}" alt="">
                     <h1 class="Quick-access-h1">الواجب اليومي</h1>
                     <p class="Quick-access-p">ثمرة الحصها القادمة،حل واجب اليوم</p>
                 </div>
+               <span class="sr-only">(current)</span>
             </a>
-            <a class="Quick-access-link" href="/app/templetes/External_pages/video.html"target="_blank" style="text-decoration: none;color: black;">
+            
+            
+            <a class="Quick-access-link" href="{{ url_for('videos.video_page') }}" style="text-decoration: none;color: black;">
                 <div class="Quick-access-box">
-                    <img style="width:280px;height:180px;margin-left:10px;margin-top: 10px;" class="" src="{{ url_for('static', filename='img/vid.gif') }}" alt="">
+                    <img style="width:280px;height:180px;margin-left:10px;margin-top: 10px;" src="{{ url_for('static', filename='img/vid.gif') }}" alt="">
                     <h1 class="Quick-access-h1">فيديو</h1>
                     <p class="Quick-access-p">شرح جديد</p>
                 </div>
             </a>
+            
             <a  class="Quick-access-link" href="/app/templetes/External_pages/environment .html"style="text-decoration: none;color: black;">
                 <div id="oopp" class="Quick-access-box">
                     <img class="Quick-access-img" src="{{ url_for('static', filename='img/mm.png') }}" alt="">
@@ -94,13 +99,14 @@
                     <p  class="Quick-access-p">مراجعات دوريه كل اسبوع</p>
                 </div>
             </a>
-            <a  class="Quick-access-link" href="/app/templetes/External_pages/August.html"style="text-decoration: none;color: black;">
+            <a class="Quick-access-link" href="{{ url_for('schedule.index') }}" style="text-decoration: none; color: black;">
                 <div id="oopp" class="Quick-access-box">
                     <img class="Quick-access-img" src="{{ url_for('static', filename='img/augos.gif') }}" alt="">
                     <h1 style="margin-top: 30px;" class="Quick-access-h1">شهر اغسطس</h1>
-                    <p style="margin-top: 30px;"  class="Quick-access-p">البدايه الموافق 19 اغسطس</p>
+                    <p style="margin-top: 30px;" class="Quick-access-p">البدايه الموافق 19 اغسطس</p>
                 </div>
             </a>
+            
             <a  class="Quick-access-link" href="/app/templetes/External_pages/pursuit.html"style="text-decoration: none;color: black;">
                 <div id="oopp" class="Quick-access-box">
                     <img class="Quick-access-img" src="{{ url_for('static', filename='img/pursuit.png') }}" alt="">

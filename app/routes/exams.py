@@ -1,11 +1,16 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from flask_login import login_required, current_user
 from app.models import Exam, Course, db
 from datetime import datetime
 
 bp = Blueprint('exams', __name__)
 
-@bp.route('/exams', methods=['GET'])
+@bp.route('/exams')
+@login_required
+def exams_page():
+    return render_template('External_pages/Exam.html')
+
+@bp.route('/api/exams', methods=['GET'])
 @login_required
 def get_exams():
     course_id = request.args.get('course_id', type=int)
@@ -27,7 +32,7 @@ def get_exams():
         'duration': e.duration
     } for e in exams]), 200
 
-@bp.route('/exams', methods=['POST'])
+@bp.route('/api/exams', methods=['POST'])
 @login_required
 def create_exam():
     if current_user.user_type != 'Teacher':
@@ -49,7 +54,7 @@ def create_exam():
     db.session.commit()
     return jsonify({'message': 'Exam created successfully', 'id': exam.id}), 201
 
-@bp.route('/exams/<int:exam_id>', methods=['GET'])
+@bp.route('/api/exams/<int:exam_id>', methods=['GET'])
 @login_required
 def get_exam(exam_id):
     exam = Exam.query.get_or_404(exam_id)
@@ -62,7 +67,7 @@ def get_exam(exam_id):
         'duration': exam.duration
     }), 200
 
-@bp.route('/exams/<int:exam_id>', methods=['PUT'])
+@bp.route('/api/exams/<int:exam_id>', methods=['PUT'])
 @login_required
 def update_exam(exam_id):
     if current_user.user_type != 'Teacher':
@@ -81,7 +86,7 @@ def update_exam(exam_id):
     db.session.commit()
     return jsonify({'message': 'Exam updated successfully'}), 200
 
-@bp.route('/exams/<int:exam_id>', methods=['DELETE'])
+@bp.route('/api/exams/<int:exam_id>', methods=['DELETE'])
 @login_required
 def delete_exam(exam_id):
     if current_user.user_type != 'Teacher':

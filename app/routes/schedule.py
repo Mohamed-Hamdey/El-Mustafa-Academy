@@ -6,7 +6,7 @@ bp = Blueprint('schedule', __name__, url_prefix='/schedule')
 @bp.route('/')
 def index():
     schedules = Schedule.query.all()
-    return render_template('schedule/index.html', schedules=schedules)
+    return render_template('External_pages/schedule.html', schedules=schedules)
 
 @bp.route('/add', methods=['GET', 'POST'])
 def add():

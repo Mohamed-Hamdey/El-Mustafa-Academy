@@ -19,9 +19,15 @@ def handle_auth():
             return jsonify({'message': 'Email already exists'}), 400
 
         # Create a new user
-        user = User(username=data['username'], email=data['email'], user_type=data['user_type'])
+        user = User(
+            username=data['username'],
+            email=data['email'],
+            user_type=data['user_type'],
+            stage=data.get('stage'),
+            phone_number=data.get('phone_number')
+        )
         user.set_password(data['password'])
-        
+
         # Save the user to the database
         db.session.add(user)
         db.session.commit()
@@ -32,7 +38,7 @@ def handle_auth():
         return jsonify({'message': 'User registered successfully', 'redirect': url_for('auth.home')}), 201
 
     else:  # Login
-        user = User.query.filter_by(username=data['username']).first()
+        user = User.query.filter_by(username=data['username'], user_type=data['user_type']).first()
 
         if user and user.check_password(data['password']):
             login_user(user)
