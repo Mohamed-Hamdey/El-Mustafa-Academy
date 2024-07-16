@@ -7,23 +7,17 @@ bp = Blueprint('videos', __name__)
 @bp.route('/videos/page', methods=['GET'])
 @login_required
 def video_page():
-    if current_user.user_type == 'Teacher':
-        return teacher_dashboard()
-    else:  # Student
-        return student_video_page()
+    return student_video_page()
 
 @bp.route('/videos', methods=['GET'])
 @login_required
 def get_videos():
     course_id = request.args.get('course_id', type=int)
+
     if course_id:
         videos = Video.query.filter_by(course_id=course_id).all()
     else:
-        if current_user.user_type == 'Teacher':
-            courses = Course.query.filter_by(teacher_id=current_user.id).all()
-            videos = [v for c in courses for v in c.videos]
-        else:
-            videos = [v for e in current_user.enrollments for v in e.course.videos]
+        videos = [v for e in current_user.enrollments for v in e.course.videos]
 
     return jsonify([{
         'id': v.id,
@@ -32,20 +26,15 @@ def get_videos():
         'description': v.description,
         'url': v.url,
         'upload_date': v.upload_date.isoformat(),
-        'video_page': url_for('videos.get_video', video_id=v.id)  # Change to get_video
+        'video_page': url_for('videos.get_video', video_id=v.id)
     } for v in videos]), 200
 
 @bp.route('/videos/create', methods=['POST'])
 @login_required
 def create_video():
-    if current_user.user_type != 'Teacher':
-        return render_template('error/403.html')
-
     data = request.get_json()
     course = Course.query.get_or_404(data['course_id'])
-    if course.teacher_id != current_user.id:
-        return render_template('error/403.html')
-
+    
     video = Video(
         course_id=data['course_id'],
         title=data['title'],
@@ -65,7 +54,7 @@ def get_video(video_id):
 
     video.views += 1
     db.session.commit()
-    
+
     return jsonify({
         'id': video.id,
         'course_id': video.course_id,
@@ -78,12 +67,7 @@ def get_video(video_id):
 @bp.route('/videos/<int:video_id>/update', methods=['PUT'])
 @login_required
 def update_video(video_id):
-    if current_user.user_type != 'Teacher':
-        return render_template('error/403.html')
-
     video = Video.query.get_or_404(video_id)
-    if video.course.teacher_id != current_user.id:
-        return render_template('error/403.html')
 
     data = request.get_json()
     video.title = data.get('title', video.title)
@@ -96,12 +80,7 @@ def update_video(video_id):
 @bp.route('/videos/<int:video_id>/delete', methods=['DELETE'])
 @login_required
 def delete_video(video_id):
-    if current_user.user_type != 'Teacher':
-        return render_template('error/403.html')
-
     video = Video.query.get_or_404(video_id)
-    if video.course.teacher_id != current_user.id:
-        return render_template('error/403.html')
 
     db.session.delete(video)
     db.session.commit()
@@ -110,9 +89,6 @@ def delete_video(video_id):
 @bp.route('/teacher/dashboard', methods=['GET'])
 @login_required
 def teacher_dashboard():
-    if current_user.user_type != 'Teacher':
-        return render_template('error/403.html')
-
     courses = Course.query.filter_by(teacher_id=current_user.id).all()
     return render_template('dashboard.html', courses=courses)
 

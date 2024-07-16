@@ -56,20 +56,11 @@
         <form id="login-form" novalidate>
           <div class="form-group">
             <label for="login-username">Username:</label>
-            <input class="form-control" id="login-username" type="text" placeholder="User_name" required>
+            <input class="form-control" id="login-username" name="username" type="text" placeholder="User_name" required>
           </div>
           <div class="form-group">
             <label for="login-password">Password:</label>
-            <input class="form-control" id="login-password" type="password" placeholder="**************" required>
-          </div>
-          <div class="form-group">
-            <label for="login-user-type">User Type:</label>
-            <div>
-              <input type="radio" id="login-user-type-student" name="user_type" value="Student" required>
-              <label for="login-user-type-student">Student</label>
-              <input type="radio" id="login-user-type-teacher" name="user_type" value="Teacher" required>
-              <label for="login-user-type-teacher">Teacher</label>
-            </div>
+            <input class="form-control" id="login-password" name="password" type="password" placeholder="**************" required>
           </div>
           <div class="alert alert-danger d-none" id="login-error"></div>
         </form>
@@ -94,11 +85,11 @@
         <form id="register-form" novalidate>
           <div class="form-group">
             <label for="register-username">Username:</label>
-            <input class="form-control" id="register-username" type="text" placeholder="User_name" required>
+            <input class="form-control" id="register-username" name="username" type="text" placeholder="User_name" required>
           </div>
           <div class="form-group">
             <label for="register-stage">Grade:</label>
-            <select class="form-control" id="register-stage" required>
+            <select class="form-control" id="register-stage" name="stage" required>
               <option value="">اختر المرحلة</option>
               <option value="first">الاول الثانوي</option>
               <option value="second">الثاني الثانوي</option>
@@ -107,24 +98,15 @@
           </div>
           <div class="form-group">
             <label for="register-phone-number">Phone Number:</label>
-            <input class="form-control" id="register-phone-number" type="tel" placeholder="0123456789" required>
+            <input class="form-control" id="register-phone-number" name="phone_number" type="tel" placeholder="0123456789" required>
           </div>
           <div class="form-group">
             <label for="register-email">Email:</label>
-            <input class="form-control" id="register-email" type="email" placeholder="account@gmail.com" required>
+            <input class="form-control" id="register-email" name="email" type="email" placeholder="account@gmail.com" required>
           </div>
           <div class="form-group">
             <label for="register-password">Password:</label>
-            <input class="form-control" id="register-password" type="password" placeholder="**************" required>
-          </div>
-          <div class="form-group">
-            <label for="register-user-type">User Type:</label>
-            <div>
-              <input type="radio" id="register-user-type-student" name="user_type" value="Student" required>
-              <label for="register-user-type-student">Student</label>
-              <input type="radio" id="register-user-type-teacher" name="user_type" value="Teacher" required>
-              <label for="register-user-type-teacher">Teacher</label>
-            </div>
+            <input class="form-control" id="register-password" name="password" type="password" placeholder="**************" required>
           </div>
           <div class="alert alert-danger d-none" id="register-error"></div>
         </form>
@@ -136,7 +118,6 @@
     </div>
   </div>
 </div>
-
 
 
   <!-- big img  -->
@@ -198,7 +179,15 @@
       const isValid = [...this.elements].every(input => input.checkValidity());
       document.getElementById('register-submit').disabled = !isValid;
     });
-
+  
+    // Prevent default form submission on Enter key
+    document.getElementById('register-form').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('register-submit').click();
+      }
+    });
+  
     // Registration functionality
     document.getElementById('register-submit').addEventListener('click', async () => {
       const username = document.getElementById('register-username').value;
@@ -206,8 +195,13 @@
       const phoneNumber = document.getElementById('register-phone-number').value;
       const email = document.getElementById('register-email').value;
       const password = document.getElementById('register-password').value;
-      const userType = document.querySelector('input[name="user_type"]:checked').value;
-
+  
+      if (!username || !stage || !phoneNumber || !email || !password) {
+        document.getElementById('register-error').innerText = 'All fields are required.';
+        document.getElementById('register-error').classList.remove('d-none');
+        return;
+      }
+  
       const response = await fetch('/', {
         method: 'POST',
         headers: {
@@ -217,12 +211,11 @@
           username,
           email,
           password,
-          user_type: userType,
           stage,
           phone_number: phoneNumber
         })
       });
-
+  
       const data = await response.json();
       if (response.ok) {
         alert('User registered successfully');
@@ -232,42 +225,56 @@
         document.getElementById('register-error').classList.remove('d-none');
       }
     });
-
+  
     // Validate Login Form
     document.getElementById('login-form').addEventListener('input', function () {
       const isValid = [...this.elements].every(input => input.checkValidity());
       document.getElementById('login-submit').disabled = !isValid;
     });
-
+  
+    // Prevent default form submission on Enter key
+    document.getElementById('login-form').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('login-submit').click();
+      }
+    });
+  
     // Login functionality
-    document.getElementById('login-submit').addEventListener('click', async () => {
+    document.getElementById('login-submit').addEventListener('click', function() {
       const username = document.getElementById('login-username').value;
       const password = document.getElementById('login-password').value;
-      const userType = document.querySelector('input[name="user_type"]:checked').value;
-
-      const response = await fetch('/', {
+  
+      if (!username || !password) {
+        document.getElementById('login-error').innerText = 'Both fields are required.';
+        document.getElementById('login-error').classList.remove('d-none');
+        return;
+      }
+  
+      fetch('/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          username,
-          password,
-          user_type: userType
-        })
+        body: JSON.stringify({ username, password })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.redirect) {
+          alert('Login successful');
+          window.location.href = data.redirect;
+        } else {
+          document.getElementById('login-error').innerText = data.message || 'Invalid username or password';
+          document.getElementById('login-error').classList.remove('d-none');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
       });
-
-      const data = await response.json();
-      if (response.ok) {
-        window.location.href = data.redirect;
-      } else {
-        document.getElementById('login-error').innerText = data.message;
-        document.getElementById('login-error').classList.remove('d-none');
-      }
     });
   </script>
-
-
+  
+  
 
   <footer class="bg-body-tertiary text-center">
     <!-- Grid container -->
@@ -358,11 +365,6 @@
 </div>
 <!-- Copyright -->
 </footer>
-  
-  
-
-
-
   
 
 <script src="{{ url_for('static', filename='login/js/popper.min.js') }}"></script>
