@@ -10,7 +10,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
-    stage = db.Column(db.String(50), nullable=True)
+    stage = db.Column(db.String(50), nullable=False)  # This field should be non-nullable if required
     phone_number = db.Column(db.String(15), nullable=True)
 
     def set_password(self, password):
@@ -19,145 +19,60 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-
-class Subject(db.Model):
-    __tablename__ = 'subject'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-
-    def __repr__(self):
-        return f'<Subject {self.name}>'
-
-class Course(db.Model):
-    __tablename__ = 'course'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    teacher_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    teacher = db.relationship('User', backref='courses')
-
-class Enrollment(db.Model):
-    __tablename__ = 'enrollment'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
-    enrollment_date = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    student = db.relationship('User', backref='enrollments')
-    course = db.relationship('Course', backref='enrollments')
-
 class Assignment(db.Model):
-    __tablename__ = 'assignment'
+    __tablename__ = 'assignments'  # Table name should be plural for consistency
     
     id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
-    due_date = db.Column(db.DateTime, nullable=False)
-    assignment_type = db.Column(db.String(20), nullable=False)
+    subject = db.Column(db.Enum('bio', 'geo', name='subject_enum'), nullable=False)
+    stage = db.Column(db.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False)  # Added stage field
+    file_path = db.Column(db.String(255), nullable=False)
+    upload_date = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    course = db.relationship('Course', backref='assignments')
+    user = db.relationship('User', backref='assignments')
 
 class Exam(db.Model):
-    __tablename__ = 'exam'
+    __tablename__ = 'exams'  # Table name should be plural for consistency
     
     id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
-    exam_date = db.Column(db.DateTime, nullable=False)
-    duration = db.Column(db.Integer, nullable=False)  # in minutes
+    subject = db.Column(db.Enum('bio', 'geo', name='subject_enum'), nullable=False)
+    stage = db.Column(db.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False)  # Added stage field
+    file_path = db.Column(db.String(255), nullable=False)
+    upload_date = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    course = db.relationship('Course', backref='exams')
+    user = db.relationship('User', backref='exams')
 
 class Video(db.Model):
-    __tablename__ = 'video'
+    __tablename__ = 'videos'  # Table name should be plural for consistency
     
     id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
-    url = db.Column(db.String(255), nullable=False)
+    subject = db.Column(db.Enum('bio', 'geo', name='subject_enum'), nullable=False)
+    stage = db.Column(db.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False)  # Added stage field
+    file_path = db.Column(db.String(255), nullable=False)
     upload_date = db.Column(db.DateTime, default=datetime.utcnow)
-    views = db.Column(db.Integer, default=0)  # Track views
-    max_views = db.Column(db.Integer, default=3)  # Limit of views
-
-    course = db.relationship('Course', backref='videos')
-
-class EnvironmentTopic(db.Model):
-    __tablename__ = 'environment_topic'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
-    title = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.Text)
-
-    course = db.relationship('Course', backref='environment_topics')
-
-class Schedule(db.Model):
-    __tablename__ = 'schedule'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
-    event_type = db.Column(db.String(20), nullable=False)
-    event_id = db.Column(db.Integer)
-    start_time = db.Column(db.DateTime, nullable=False)
-    end_time = db.Column(db.DateTime, nullable=False)
-
-    course = db.relationship('Course', backref='schedules')
-
-class Notification(db.Model):
-    __tablename__ = 'notification'
-    
-    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    message = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    is_read = db.Column(db.Boolean, default=False)
+    views = db.Column(db.Integer, default=0)
+    max_views = db.Column(db.Integer, default=3)
 
-    user = db.relationship('User', backref='notifications')
+    user = db.relationship('User', backref='videos')
 
-class ParentStudent(db.Model):
-    __tablename__ = 'parent_student'
-    
-    parent_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-
-    parent = db.relationship('User', foreign_keys=[parent_id], backref='parent_associations')
-    student = db.relationship('User', foreign_keys=[student_id], backref='student_associations')
-
-class StudentProgress(db.Model):
-    __tablename__ = 'student_progress'
+class Course(db.Model):  # Renamed to Course
+    __tablename__ = 'courses'  # Table name should be plural for consistency
     
     id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
-    assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
-    exam_id = db.Column(db.Integer, db.ForeignKey('exam.id'))
-    score = db.Column(db.Float)
-    feedback = db.Column(db.Text)
-    date_recorded = db.Column(db.DateTime, default=datetime.utcnow)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    subject = db.Column(db.Enum('bio', 'geo', name='subject_enum'), nullable=False)
+    stage = db.Column(db.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False)  # Added stage field
+    file_path = db.Column(db.String(255), nullable=False)
+    upload_date = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    student = db.relationship('User', backref='progress_records')
-    course = db.relationship('Course', backref='progress_records')
-    assignment = db.relationship('Assignment', backref='progress_records')
-    exam = db.relationship('Exam', backref='progress_records')
-
-class Grade(db.Model):
-    __tablename__ = 'grade'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'), nullable=False)
-    term = db.Column(db.Enum('first', 'second', 'third', name='term_types'), nullable=False)
-    grade_value = db.Column(db.Float, nullable=False)
-    comments = db.Column(db.Text)
-    date_recorded = db.Column(db.DateTime, default=datetime.utcnow)
-
-    student = db.relationship('User', backref='grades')
-    subject = db.relationship('Subject', backref='grades')
-
-    def __repr__(self):
-        return f'<Grade {self.id}: Student {self.student_id}, Subject {self.subject_id}, Term {self.term}>'
+    user = db.relationship('User', backref='courses')

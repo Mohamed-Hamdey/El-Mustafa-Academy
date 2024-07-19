@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template, url_for
 from flask_login import login_required, current_user
-from app.models import Video, Course, db
+from app.models import Video, db
 
 bp = Blueprint('videos', __name__)
 
@@ -12,20 +12,14 @@ def video_page():
 @bp.route('/videos', methods=['GET'])
 @login_required
 def get_videos():
-    course_id = request.args.get('course_id', type=int)
-
-    if course_id:
-        videos = Video.query.filter_by(course_id=course_id).all()
-    else:
-        videos = [v for e in current_user.enrollments for v in e.course.videos]
-
+    videos = Video.query.filter_by(stage=current_user.stage).all()  # Filter by user's stage
     return jsonify([{
         'id': v.id,
-        'course_id': v.course_id,
         'title': v.title,
         'description': v.description,
-        'url': v.url,
         'upload_date': v.upload_date.isoformat(),
+        'subject': v.subject,
+        'file_path': v.file_path,
         'video_page': url_for('videos.get_video', video_id=v.id)
     } for v in videos]), 200
 
@@ -33,13 +27,13 @@ def get_videos():
 @login_required
 def create_video():
     data = request.get_json()
-    course = Course.query.get_or_404(data['course_id'])
-    
     video = Video(
-        course_id=data['course_id'],
         title=data['title'],
         description=data['description'],
-        url=data['url']
+        subject=data['subject'],
+        stage=data['stage'],  # Added stage field
+        file_path=data['file_path'],
+        user_id=current_user.id
     )
     db.session.add(video)
     db.session.commit()
@@ -49,6 +43,9 @@ def create_video():
 @login_required
 def get_video(video_id):
     video = Video.query.get_or_404(video_id)
+    if video.stage != current_user.stage:
+        return render_template('error/403.html')  # User should not access videos not in their stage
+
     if video.views >= video.max_views:
         return render_template('error/403.html')
 
@@ -57,11 +54,11 @@ def get_video(video_id):
 
     return jsonify({
         'id': video.id,
-        'course_id': video.course_id,
         'title': video.title,
         'description': video.description,
-        'url': video.url,
-        'upload_date': video.upload_date.isoformat()
+        'upload_date': video.upload_date.isoformat(),
+        'subject': video.subject,
+        'file_path': video.file_path
     }), 200
 
 @bp.route('/videos/<int:video_id>/update', methods=['PUT'])
@@ -72,7 +69,8 @@ def update_video(video_id):
     data = request.get_json()
     video.title = data.get('title', video.title)
     video.description = data.get('description', video.description)
-    video.url = data.get('url', video.url)
+    video.file_path = data.get('file_path', video.file_path)
+    video.stage = data.get('stage', video.stage)  # Added stage field
 
     db.session.commit()
     return jsonify({'message': 'Video updated successfully'}), 200
@@ -89,11 +87,10 @@ def delete_video(video_id):
 @bp.route('/teacher/dashboard', methods=['GET'])
 @login_required
 def teacher_dashboard():
-    courses = Course.query.filter_by(teacher_id=current_user.id).all()
-    return render_template('dashboard.html', courses=courses)
+    return render_template('dashboard.html')
 
 @bp.route('/student/videos', methods=['GET'])
 @login_required
 def student_video_page():
-    videos = [v for e in current_user.enrollments for v in e.course.videos]
+    videos = Video.query.filter_by(stage=current_user.stage).all()  # Filter by user's stage
     return render_template('External_pages/video.html', videos=videos)

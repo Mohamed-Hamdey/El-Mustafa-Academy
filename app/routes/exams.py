@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template
 from flask_login import login_required, current_user
-from app.models import Exam, Course, db
+from app.models import Exam, db
 from datetime import datetime
 
 bp = Blueprint('exams', __name__)
@@ -13,42 +13,23 @@ def exams_page():
 @bp.route('/api/exams', methods=['GET'])
 @login_required
 def get_exams():
-    course_id = request.args.get('course_id', type=int)
-    if course_id:
-        exams = Exam.query.filter_by(course_id=course_id).all()
-    else:
-        if current_user.user_type == 'Teacher':
-            courses = Course.query.filter_by(teacher_id=current_user.id).all()
-            exams = [e for c in courses for e in c.exams]
-        else:
-            exams = [e for enrollment in current_user.enrollments for e in enrollment.course.exams]
-
+    exams = Exam.query.filter_by(user_id=current_user.id).all()
     return jsonify([{
         'id': e.id,
-        'course_id': e.course_id,
         'title': e.title,
         'description': e.description,
-        'exam_date': e.exam_date.isoformat(),
-        'duration': e.duration
+        'date': e.date.isoformat()
     } for e in exams]), 200
 
 @bp.route('/api/exams', methods=['POST'])
 @login_required
 def create_exam():
-    if current_user.user_type != 'Teacher':
-        return jsonify({'message': 'Only teachers can create exams'}), 403
-
     data = request.get_json()
-    course = Course.query.get_or_404(data['course_id'])
-    if course.teacher_id != current_user.id:
-        return jsonify({'message': 'You can only create exams for your own courses'}), 403
-
     exam = Exam(
-        course_id=data['course_id'],
         title=data['title'],
         description=data['description'],
-        exam_date=datetime.fromisoformat(data['exam_date']),
-        duration=data['duration']
+        date=datetime.fromisoformat(data['date']),
+        user_id=current_user.id
     )
     db.session.add(exam)
     db.session.commit()
@@ -58,30 +39,26 @@ def create_exam():
 @login_required
 def get_exam(exam_id):
     exam = Exam.query.get_or_404(exam_id)
+    if exam.user_id != current_user.id:
+        return jsonify({'message': 'Unauthorized access'}), 403
     return jsonify({
         'id': exam.id,
-        'course_id': exam.course_id,
         'title': exam.title,
         'description': exam.description,
-        'exam_date': exam.exam_date.isoformat(),
-        'duration': exam.duration
+        'date': exam.date.isoformat()
     }), 200
 
 @bp.route('/api/exams/<int:exam_id>', methods=['PUT'])
 @login_required
 def update_exam(exam_id):
-    if current_user.user_type != 'Teacher':
-        return jsonify({'message': 'Only teachers can update exams'}), 403
-
     exam = Exam.query.get_or_404(exam_id)
-    if exam.course.teacher_id != current_user.id:
-        return jsonify({'message': 'You can only update your own exams'}), 403
+    if exam.user_id != current_user.id:
+        return jsonify({'message': 'Unauthorized access'}), 403
 
     data = request.get_json()
     exam.title = data.get('title', exam.title)
     exam.description = data.get('description', exam.description)
-    exam.exam_date = datetime.fromisoformat(data.get('exam_date', exam.exam_date.isoformat()))
-    exam.duration = data.get('duration', exam.duration)
+    exam.date = datetime.fromisoformat(data.get('date', exam.date.isoformat()))
 
     db.session.commit()
     return jsonify({'message': 'Exam updated successfully'}), 200
@@ -89,13 +66,19 @@ def update_exam(exam_id):
 @bp.route('/api/exams/<int:exam_id>', methods=['DELETE'])
 @login_required
 def delete_exam(exam_id):
-    if current_user.user_type != 'Teacher':
-        return jsonify({'message': 'Only teachers can delete exams'}), 403
-
     exam = Exam.query.get_or_404(exam_id)
-    if exam.course.teacher_id != current_user.id:
-        return jsonify({'message': 'You can only delete your own exams'}), 403
+    if exam.user_id != current_user.id:
+        return jsonify({'message': 'Unauthorized access'}), 403
 
     db.session.delete(exam)
     db.session.commit()
     return jsonify({'message': 'Exam deleted successfully'}), 200
+
+@bp.errorhandler(404)
+def not_found_error(error):
+    return render_template('error/404.html'), 404
+
+@bp.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('error/500.html'), 500

@@ -1,5 +1,5 @@
 from app import create_app, db
-from app.models import User, Course, Enrollment, Assignment, Exam, Video, EnvironmentTopic, Schedule, Notification, ParentStudent, StudentProgress
+from app.models import User, Course, Assignment, Exam, Video
 
 app = create_app()
 
@@ -9,15 +9,9 @@ def make_shell_context():
         'db': db, 
         'User': User, 
         'Course': Course, 
-        'Enrollment': Enrollment,
         'Assignment': Assignment,
         'Exam': Exam,
         'Video': Video,
-        'EnvironmentTopic': EnvironmentTopic,
-        'Schedule': Schedule,
-        'Notification': Notification,
-        'ParentStudent': ParentStudent,
-        'StudentProgress': StudentProgress
     }
 
 if __name__ == '__main__':

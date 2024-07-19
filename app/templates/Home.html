@@ -23,12 +23,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarScroll">
             <ul class="navbar-nav ms-auto my-2 mr-3 my-lg-0 navbar-nav-scroll" style="max-height: 100px;">
-                <li class="nav-item active">
-                    <a id="" class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample"  aria-controls="offcanvasExample" >اشعارات <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a  class="nav-link" href="/app/templetes/External_pages/pursuit.html"target="_blank">متابعة ولي الامر <span class="sr-only">(current)</span></a>
-                </li>
+                
+                
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ url_for('exams.exams_page') }}" >امتحانات <span class="sr-only">(current)</span></a>
                 </li>
@@ -52,13 +48,7 @@
     <!-- Quick access link  -->
     <div style="display: flex;" class="container">
         <div id="Quick-access" >
-            <a  data-bs-toggle="offcanvas" href="#offcanvasExample"  aria-controls="offcanvasExample" class="Quick-access-link" style="text-decoration: none;color: black;">
-                <div id="oopp" class="Quick-access-box">
-                    <img class="Quick-access-img" src="{{ url_for('static', filename='img/Notifications.png') }}" alt="">
-                    <h1 class="Quick-access-h1">اشعارات</h1>
-                    <p class="Quick-access-p">قم بتفعيل الاشعارات دائما</p>
-                </div>
-            </a>
+            
             <a class="Quick-access-link" href="{{ url_for('exams.exams_page') }}" style="text-decoration: none;color: black;">
                 <div class="Quick-access-box">
                     <img class="Quick-access-img" src="{{ url_for('static', filename='img/exam.png') }}" alt="">
@@ -85,13 +75,7 @@
                 </div>
             </a>
             
-            <a  class="Quick-access-link" href="/app/templetes/External_pages/environment .html"style="text-decoration: none;color: black;">
-                <div id="oopp" class="Quick-access-box">
-                    <img class="Quick-access-img" src="{{ url_for('static', filename='img/mm.png') }}" alt="">
-                    <h1 class="Quick-access-h1">علوم البيئه</h1>
-                    <p class="Quick-access-p">بدايه الموافق 1 يونيو</p>
-                </div>
-            </a>
+            
             <a  class="Quick-access-link" href="/app/templetes/External_pages/Revision.html"style="text-decoration: none;color: black;">
                 <div id="oopp" class="Quick-access-box">
                     <img class="Quick-access-img" src="{{ url_for('static', filename='img/rev.png') }}" alt="">
@@ -99,21 +83,9 @@
                     <p  class="Quick-access-p"> دورات و دروس كل اسبوع</p>
                 </div>
             </a>
-            <a class="Quick-access-link" href="{{ url_for('schedule.index') }}" style="text-decoration: none; color: black;">
-                <div id="oopp" class="Quick-access-box">
-                    <img class="Quick-access-img" src="{{ url_for('static', filename='img/augos.gif') }}" alt="">
-                    <h1 style="margin-top: 30px;" class="Quick-access-h1">شهر اغسطس</h1>
-                    <p style="margin-top: 30px;" class="Quick-access-p">البدايه الموافق 19 اغسطس</p>
-                </div>
-            </a>
             
-            <a  class="Quick-access-link" href="/app/templetes/External_pages/pursuit.html"style="text-decoration: none;color: black;">
-                <div id="oopp" class="Quick-access-box">
-                    <img class="Quick-access-img" src="{{ url_for('static', filename='img/pursuit.png') }}" alt="">
-                    <h1 class="Quick-access-h1">متابعة ولي الامر</h1>
-                    <p class="Quick-access-p"> حفاظا علي سلوك الطالب وتفوقه دراسيا</p>
-                </div>
-            </a>
+            
+            
         </div>
     </div>
 
@@ -123,16 +95,6 @@
 
 
 
-     <!-- notifications  -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-        <div class="offcanvas-header">
-          <h3 class="offcanvas-title" id="offcanvasExampleLabel">Notifications..</h3>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-
-        </div>
-    </div>
 
     <!-- Footer -->
     <footer class="text-center bg-body-tertiary">

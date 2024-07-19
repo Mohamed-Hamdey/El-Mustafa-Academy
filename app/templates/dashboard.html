@@ -9,23 +9,22 @@
     <style>
         /* Basic Modal Styles */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
         }
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
+            margin: 10% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
+            width: 50%;
             border-radius: 5px;
         }
         .close {
@@ -44,17 +43,21 @@
         input[type="text"], select {
             width: 100%;
             padding: 10px;
-            margin: 5px 0;
+            margin: 5px 0 15px 0;
+            display: inline-block;
             border: 1px solid #ccc;
             border-radius: 4px;
+            box-sizing: border-box;
         }
         button {
-            background-color: #4CAF50; /* Green */
+            background-color: #4CAF50;
             color: white;
-            padding: 10px;
+            padding: 14px 20px;
+            margin: 8px 0;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            width: 100%;
         }
         button:hover {
             background-color: #45a049;
@@ -72,68 +75,27 @@
             background-color: #f8d7da;
             color: #721c24;
         }
+        /* Custom Button Styles */
+        .btn-upload {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 4px;
+            margin: 5px;
+        }
+        .btn-upload:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
 
     <!-- SIDEBAR -->
     <section id="sidebar">
-        <a href="#" class="brand">
-            <i class='bx bxs-smile'></i>
-            <span class="text">Admin</span>
-        </a>
-        <ul class="side-menu top">
-            <li class="active">
-                <a href="#">
-                    <i class='bx bxs-dashboard'></i>
-                    <span class="text">Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" id="videos-section">
-                    <i class='bx bxs-video'></i>
-                    <span class="text">My Videos</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-doughnut-chart'></i>
-                    <span class="text">Assignments</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-message-dots'></i>
-                    <span class="text">Messages for Parents</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ url_for('courses.course_page') }}">
-                    <i class='bx bxs-book'></i>
-                    <span class="text">Manage Courses</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" id="add-course-btn">
-                    <i class='bx bxs-add-to-queue'></i>
-                    <span class="text">Add Course</span>
-                </a>
-            </li>
-        </ul>
-        <ul class="side-menu">
-            <li>
-                <a href="#">
-                    <i class='bx bxs-cog'></i>
-                    <span class="text">Settings</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="logout">
-                    <i class='bx bxs-log-out-circle'></i>
-                    <span class="text">Logout</span>
-                </a>
-            </li>
-        </ul>
+        <!-- Sidebar content -->
     </section>
     <!-- SIDEBAR -->
 
@@ -141,23 +103,7 @@
     <section id="content">
         <!-- NAVBAR -->
         <nav>
-            <i class='bx bx-menu'></i>
-            <a href="#" class="nav-link">Categories</a>
-            <form action="#">
-                <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-                </div>
-            </form>
-            <input type="checkbox" id="switch-mode" hidden>
-            <label for="switch-mode" class="switch-mode"></label>
-            <a href="#" class="notification">
-                <i class='bx bxs-bell'></i>
-                <span class="num">8</span>
-            </a>
-            <a href="#" class="profile">
-                <img src="c:\Users\NoteBook\Documents\work\adminhub-master\img\Annotation 2024-03-17 065933.png">
-            </a>
+            <!-- Navbar content -->
         </nav>
         <!-- NAVBAR -->
 
@@ -166,11 +112,6 @@
             <div class="head-title">
                 <div class="left">
                     <h1>Dashboard</h1>
-                    <ul class="breadcrumb">
-                        <li><a href="#">Dashboard</a></li>
-                        <li><i class='bx bx-chevron-right'></i></li>
-                        <li><a class="active" href="#">Home</a></li>
-                    </ul>
                 </div>
                 <div class="buttons">
                     <a href="#" class="btn-upload" id="upload-video-btn">
@@ -181,36 +122,20 @@
                         <i class='bx bxs-cloud-upload'></i>
                         <span class="text">Upload Assignment</span>
                     </a>
+                    <a href="#" class="btn-upload" id="add-course-btn">
+                        <i class='bx bxs-cloud-upload'></i>
+                        <span class="text">Add Course</span>
+                    </a>
                 </div>
             </div>
 
             <ul class="box-info">
-                <li>
-                    <i class='bx bxs-calendar-check'></i>
-                    <span class="text">
-                        <h3>1020</h3>
-                        <p>Number of Videos</p>
-                    </span>
-                </li>
-                <li>
-                    <i class='bx bxs-group'></i>
-                    <span class="text">
-                        <h3>2834</h3>
-                        <p>Number of Students</p>
-                    </span>
-                </li>
-                <li>
-                    <i class='bx bxs-dollar-circle'></i>
-                    <span class="text">
-                        <h3>$2543</h3>
-                        <p>Total Earnings</p>
-                    </span>
-                </li>
+                <!-- Dashboard statistics -->
             </ul>
 
             <h2>My Videos</h2>
             <ul id="video-list">
-                <!-- Videos will be populated here -->
+                <!-- Videos list -->
             </ul>
 
             <h2>Manage Courses</h2>
@@ -218,13 +143,18 @@
                 <a href="{{ url_for('courses.course_page') }}" class="btn btn-primary">View Courses</a>
                 <a href="#" class="btn btn-success" id="add-course-btn">Add Course</a>
             </div>
-
+            <!-- Add Course Modal -->
             <div id="add-course-modal" class="modal">
                 <div class="modal-content">
                     <span class="close" id="close-add-course">&times;</span>
                     <h2>Add Course</h2>
                     <form id="add-course-form">
                         <input type="text" id="course-name" placeholder="Course Name" required>
+                        <select id="course-stage" required>
+                            <option value="">Select Stage</option>
+                            <option value="bio">Bio</option>
+                            <option value="geo">Geo</option>
+                        </select>
                         <button type="submit">Add Course</button>
                     </form>
                     <div id="add-course-error" class="alert alert-danger d-none"></div>
@@ -250,27 +180,110 @@
                     <option value="{{ course.id }}">{{ course.name }}</option>
                     {% endfor %}
                 </select>
+                <select id="video-stage" required>
+                    <option value="">Select Stage</option>
+                    <option value="bio">Bio</option>
+                    <option value="geo">Geo</option>
+                </select>
                 <button type="submit">Upload</button>
             </form>
-            <div id="upload-error" class="alert alert-danger d-none"></div>
+            <div id="upload-video-error" class="alert alert-danger d-none"></div>
+            <div id="upload-video-success" class="alert alert-success d-none"></div>
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+    <!-- Assignment Upload Modal -->
+    <div class="modal" id="upload-assignment-modal">
+        <div class="modal-content">
+            <span class="close" id="close-upload-assignment">&times;</span>
+            <h2>Upload Assignment</h2>
+            <form id="upload-assignment-form">
+                <input type="text" id="assignment-title" placeholder="Assignment Title" required>
+                <input type="text" id="assignment-description" placeholder="Assignment Description" required>
+                <input type="text" id="assignment-url" placeholder="Assignment URL" required>
+                <select id="assignment-course" required>
+                    <option value="">Select Course</option>
+                    {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+                <select id="assignment-stage" required>
+                    <option value="">Select Stage</option>
+                    <option value="bio">Bio</option>
+                    <option value="geo">Geo</option>
+                </select>
+                <button type="submit">Upload</button>
+            </form>
+            <div id="upload-assignment-error" class="alert alert-danger d-none"></div>
+            <div id="upload-assignment-success" class="alert alert-success d-none"></div>
+        </div>
+    </div>
+
     <script>
-        // Show Add Course Modal
-        document.getElementById('add-course-btn').addEventListener('click', function () {
-        document.getElementById('add-course-modal').style.display = 'block';
-        });
+        // Modal functionality
+        var modals = {
+            'upload-video': {
+                btn: document.getElementById('upload-video-btn'),
+                modal: document.getElementById('upload-video-modal'),
+                close: document.getElementById('close-upload-video')
+            },
+            'upload-assignment': {
+                btn: document.getElementById('upload-assignment-btn'),
+                modal: document.getElementById('upload-assignment-modal'),
+                close: document.getElementById('close-upload-assignment')
+            },
+            'add-course': {
+                btn: document.getElementById('add-course-btn'),
+                modal: document.getElementById('add-course-modal'),
+                close: document.getElementById('close-add-course')
+            }
+        };
 
-document.querySelector('.close').addEventListener('click', function () {
-    document.getElementById('add-course-modal').style.display = 'none';
-});
+        for (const key in modals) {
+            modals[key].btn.onclick = function() {
+                modals[key].modal.style.display = "block";
+            };
+            modals[key].close.onclick = function() {
+                modals[key].modal.style.display = "none";
+            };
+        }
 
-        // Close Add Course Modal
-        document.getElementById('close-add-course').addEventListener('click', function() {
-            document.getElementById('add-course-modal').style.display = 'none';
-        });
+        window.onclick = function(event) {
+            for (const key in modals) {
+                if (event.target == modals[key].modal) {
+                    modals[key].modal.style.display = "none";
+                }
+            }
+        };
+
+        // Form submission functionality
+        var forms = {
+            'upload-video': {
+                form: document.getElementById('upload-video-form'),
+                success: document.getElementById('upload-video-success'),
+                error: document.getElementById('upload-video-error')
+            },
+            'upload-assignment': {
+                form: document.getElementById('upload-assignment-form'),
+                success: document.getElementById('upload-assignment-success'),
+                error: document.getElementById('upload-assignment-error')
+            },
+            'add-course': {
+                form: document.getElementById('add-course-form'),
+                success: document.getElementById('add-course-success'),
+                error: document.getElementById('add-course-error')
+            }
+        };
+
+        for (const key in forms) {
+            forms[key].form.onsubmit = function(event) {
+                event.preventDefault();
+                // Handle form submission (e.g., via AJAX)
+                // Show success or error message
+                forms[key].success.style.display = 'block';
+                forms[key].success.innerHTML = "Form submitted successfully!";
+            };
+        }
     </script>
 </body>
 </html>

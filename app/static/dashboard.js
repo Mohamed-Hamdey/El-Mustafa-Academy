@@ -146,3 +146,66 @@ document.getElementById('add-course-form').addEventListener('submit', async func
         document.getElementById('add-course-error').classList.remove('d-none');
     }
 });
+// Handle form submission
+document.getElementById('video-upload-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Check that a course is selected
+    const course = document.getElementById('course-select').value;
+    if (!course) {
+        alert('Please select a course.');
+        return;
+    }
+
+    // Simulate video upload logic
+    let success = true; // Simulate success or failure
+    if (success) {
+        document.getElementById('video-upload-success').classList.remove('d-none');
+        document.getElementById('video-upload-error').classList.add('d-none');
+    } else {
+        document.getElementById('video-upload-error').classList.remove('d-none');
+        document.getElementById('video-upload-success').classList.add('d-none');
+    }
+});
+// Handle form submission for assignments
+document.getElementById('assignments-upload-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Check that a course is selected
+    const course = document.getElementById('assignment-course-select').value;
+    if (!course) {
+        alert('Please select a course.');
+        return;
+    }
+
+    // Simulate assignment upload logic
+    let success = true; // Simulate success or failure
+    if (success) {
+        document.getElementById('assignment-upload-success').classList.remove('d-none');
+        document.getElementById('assignment-upload-error').classList.add('d-none');
+    } else {
+        document.getElementById('assignment-upload-error').classList.remove('d-none');
+        document.getElementById('assignment-upload-success').classList.add('d-none');
+    }
+});
+// Handle form submission for category files
+document.getElementById('category-files-upload-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Check that a category is selected
+    const category = document.getElementById('category-file-select').value;
+    if (!category) {
+        alert('Please select a category.');
+        return;
+    }
+
+    // Simulate file upload logic
+    let success = true; // Simulate success or failure
+    if (success) {
+        document.getElementById('category-file-upload-success').classList.remove('d-none');
+        document.getElementById('category-file-upload-error').classList.add('d-none');
+    } else {
+        document.getElementById('category-file-upload-error').classList.remove('d-none');
+        document.getElementById('category-file-upload-success').classList.add('d-none');
+    }
+});

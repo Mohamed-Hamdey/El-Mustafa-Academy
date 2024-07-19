@@ -2,121 +2,115 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Homework-page</title>
+    <title>Homework Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='External/Homework/css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='External/Homework.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-
+    <style>
+      .assignments-container {
+          background-color: #f8f9fa;
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .assignment-item {
+          margin-bottom: 20px;
+      }
+      .assignment-item h2 {
+          font-size: 1.5rem;
+          color: #007bff;
+      }
+      .assignment-item p {
+          margin: 5px 0;
+      }
+      .assignment-item strong {
+          color: #343a40;
+      }
+  </style>
 </head>
 <body>
     <!-- navbar -->
-    <nav style="width: 100%; position:fixed;background-color: #232323;" class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand ml-1" href="/app/templetes/stud-home.html">
-          <img style="width:130px;height:50px;margin-left: 30px;" src="{{ url_for('static', filename='img/3MS copy.png') }}" alt="">
+    <nav style="width: 100%; position: fixed; background-color: #232323;" class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand ml-1" href="{{ url_for('auth.home') }}">
+            <img style="width:130px;height:50px;margin-left: 30px;" src="{{ url_for('static', filename='img/3MS copy.png') }}" alt="">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarScroll">
             <ul class="navbar-nav ms-auto my-2 mr-3 my-lg-0 navbar-nav-scroll" style="max-height: 100px;">
                 <li class="nav-item active">
-                  <a id="" class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample"  aria-controls="offcanvasExample" >اشعارات <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('exams') }}">امتحانات <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/External_pages/pursuit.html">متابعة ولي الامر <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('assignments.get_assignments') }}">واجب اليوم <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/External_pages/Exam.html">امتحانات <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('videos.student_video_page') }}">فيديو <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/External_pages/Homework.html">واجب اليوم <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/External_pages/video.html">فيديو <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/app/templetes/stud-home.html">الصفحه الرئيسيه<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('auth.home') }}">الصفحه الرئيسيه<span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-
         </div>
     </nav>
     
-     <!-- notifications  -->
-     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-      <div class="offcanvas-header">
-        <h3 class="offcanvas-title" id="offcanvasExampleLabel">Notifications..</h3>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-
+    <!-- Assignments Content -->
+    <div class="container mt-5 pt-5">
+      <div class="assignments-container">
+          <h1 class="text-center mb-4">Assignments for {{ current_user.stage }}</h1>
+          <ul class="list-group">
+              {% for assignment in assignments %}
+                  <li class="list-group-item assignment-item">
+                      <h2>{{ assignment.title }}</h2>
+                      <p>{{ assignment.description }}</p>
+                      <p><strong>Subject:</strong> {{ assignment.subject }}</p>
+                      <p><strong>Uploaded on:</strong> {{ assignment.upload_date }}</p>
+                      <a href="{{ url_for('static', filename=assignment.file_path) }}" class="btn btn-primary" download>Download Assignment</a>
+                  </li>
+              {% endfor %}
+          </ul>
       </div>
   </div>
-
+    
     <!-- Footer -->
-    <footer style="position: absolute;bottom: 0;width: 100%;" class="text-center bg-body-tertiary">
+    <footer style="position: absolute; bottom: 0; width: 100%;" class="text-center bg-body-tertiary">
         <!-- Grid container -->
         <div class="container pt-4">
-          <!-- Section: Social media -->
-          <section class="mb-4">
-            <!-- Facebook -->
-            <a
-              data-mdb-ripple-init
-              class="btn btn-link btn-floating btn-lg text-body m-1"
-              href="https://www.facebook.com/profile.php?id=100003632809846&mibextid=ZbWKwL"
-              role="button"
-              data-mdb-ripple-color="dark"
-              ><i class="fab fa-facebook-f"></i
-            ></a>
-      
-            <!--  -->
-            <a
-              data-mdb-ripple-init
-              class="btn btn-link btn-floating btn-lg text-body m-1"
-              href="https://www.youtube.com/@user-xu3zr4lq5f"
-              role="button"
-              data-mdb-ripple-color="dark"
-              ><i class="fab fa-youtube"></i
-            ></a>
-      
-      
-            <!-- Google -->
-            <a
-              data-mdb-ripple-init
-              class="btn btn-link btn-floating btn-lg text-body m-1"
-              href="#!"
-              role="button"
-              data-mdb-ripple-color="dark"
-              ><i class="fab fa-google"></i
-            ></a>
-      
-            <!-- Instagram -->
-            <a
-              data-mdb-ripple-init
-              class="btn btn-link btn-floating btn-lg text-body m-1"
-              href="#!"
-              role="button"
-              data-mdb-ripple-color="dark"
-              ><i class="fab fa-instagram"></i
-            ></a>
-
-          </section>
-          <!-- Section: Social media -->
+            <!-- Section: Social media -->
+            <section class="mb-4">
+                <!-- Facebook -->
+                <a data-mdb-ripple-init class="btn btn-link btn-floating btn-lg text-body m-1" href="https://www.facebook.com/profile.php?id=100003632809846&mibextid=ZbWKwL" role="button" data-mdb-ripple-color="dark">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <!-- YouTube -->
+                <a data-mdb-ripple-init class="btn btn-link btn-floating btn-lg text-body m-1" href="https://www.youtube.com/@user-xu3zr4lq5f" role="button" data-mdb-ripple-color="dark">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <!-- Google -->
+                <a data-mdb-ripple-init class="btn btn-link btn-floating btn-lg text-body m-1" href="#!" role="button" data-mdb-ripple-color="dark">
+                    <i class="fab fa-google"></i>
+                </a>
+                <!-- Instagram -->
+                <a data-mdb-ripple-init class="btn btn-link btn-floating btn-lg text-body m-1" href="#!" role="button" data-mdb-ripple-color="dark">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </section>
+            <!-- Section: Social media -->
         </div>
         <!-- Grid container -->
-      
         <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-          © 2024 Copyright:
-          <a class="text-body" href="">Contact US</a>
+            © 2024 Copyright:
+            <a class="text-body" href="#">Contact US</a>
         </div>
         <!-- Copyright -->
-      </footer>
-      <script src="{{ url_for('static', filename='External/Homework/js/popper.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='External/Homework/js/jquery-3.7.1.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='External/Homework/js/bootstrap.js') }}"></script>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='External/Homework/js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='External/Homework/js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='External/Homework/js/bootstrap.js') }}"></script>
 </body>
 </html>
