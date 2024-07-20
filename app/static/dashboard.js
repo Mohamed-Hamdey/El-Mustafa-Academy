@@ -162,6 +162,7 @@ document.getElementById('video-upload-form').addEventListener('submit', function
     if (success) {
         document.getElementById('video-upload-success').classList.remove('d-none');
         document.getElementById('video-upload-error').classList.add('d-none');
+        
     } else {
         document.getElementById('video-upload-error').classList.remove('d-none');
         document.getElementById('video-upload-success').classList.add('d-none');

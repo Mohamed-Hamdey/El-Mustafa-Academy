@@ -1,5 +1,7 @@
+import os
 from flask import Blueprint, request, jsonify, render_template
 from flask_login import login_required, current_user
+import app
 from app.models import Exam, db
 from datetime import datetime
 
@@ -13,12 +15,15 @@ def exams_page():
 @bp.route('/api/exams', methods=['GET'])
 @login_required
 def get_exams():
-    exams = Exam.query.filter_by(user_id=current_user.id).all()
+    exams = Exam.query.filter_by(stage=current_user.stage).all()
     return jsonify([{
         'id': e.id,
         'title': e.title,
         'description': e.description,
-        'date': e.date.isoformat()
+        'subject': e.subject,
+        'stage': e.stage,
+        'file_path': e.file_path,
+        'upload_date': e.upload_date.isoformat()
     } for e in exams]), 200
 
 @bp.route('/api/exams', methods=['POST'])
@@ -28,7 +33,9 @@ def create_exam():
     exam = Exam(
         title=data['title'],
         description=data['description'],
-        date=datetime.fromisoformat(data['date']),
+        subject=data['subject'],
+        stage=data['stage'],
+        file_path=data['file_path'],
         user_id=current_user.id
     )
     db.session.add(exam)
@@ -39,13 +46,17 @@ def create_exam():
 @login_required
 def get_exam(exam_id):
     exam = Exam.query.get_or_404(exam_id)
-    if exam.user_id != current_user.id:
+    if exam.stage != current_user.stage:
         return jsonify({'message': 'Unauthorized access'}), 403
+
     return jsonify({
         'id': exam.id,
         'title': exam.title,
         'description': exam.description,
-        'date': exam.date.isoformat()
+        'subject': exam.subject,
+        'stage': exam.stage,
+        'file_path': exam.file_path,
+        'upload_date': exam.upload_date.isoformat()
     }), 200
 
 @bp.route('/api/exams/<int:exam_id>', methods=['PUT'])
@@ -58,7 +69,10 @@ def update_exam(exam_id):
     data = request.get_json()
     exam.title = data.get('title', exam.title)
     exam.description = data.get('description', exam.description)
-    exam.date = datetime.fromisoformat(data.get('date', exam.date.isoformat()))
+    exam.subject = data.get('subject', exam.subject)
+    exam.stage = data.get('stage', exam.stage)
+    exam.file_path = data.get('file_path', exam.file_path)
+    exam.upload_date = datetime.fromisoformat(data.get('upload_date', exam.upload_date.isoformat()))
 
     db.session.commit()
     return jsonify({'message': 'Exam updated successfully'}), 200

@@ -29,7 +29,7 @@
                     <a class="nav-link" href="{{ url_for('exams.exams_page') }}" >امتحانات <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('assignments.assignments_page') }}" >واجب اليوم <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('assignments.get_assignments') }}" >واجب اليوم <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ url_for('videos.video_page') }}" ">فيديو <span class="sr-only">(current)</span></a>
@@ -48,7 +48,6 @@
     <!-- Quick access link  -->
     <div style="display: flex;" class="container">
         <div id="Quick-access" >
-            
             <a class="Quick-access-link" href="{{ url_for('exams.exams_page') }}" style="text-decoration: none;color: black;">
                 <div class="Quick-access-box">
                     <img class="Quick-access-img" src="{{ url_for('static', filename='img/exam.png') }}" alt="">
@@ -56,17 +55,14 @@
                     <p class="Quick-access-p">امتحانات دوريه علي النظام الجديد</p>
                 </div>
             </a>
-            
-            <a class="Quick-access-link" href="{{ url_for('assignments.assignments_page') }}"  style="text-decoration: none; color: black;">
+            <a class="Quick-access-link" href="{{ url_for('assignments.get_assignments') }}"  style="text-decoration: none; color: black;">
                 <div class="Quick-access-box">
                     <img class="Quick-access-img" src="{{ url_for('static', filename='img/homeWork.png') }}" alt="">
                     <h1 class="Quick-access-h1">الواجب اليومي</h1>
-                    <p class="Quick-access-p">ثمرة الحصها القادمة،حل واجب اليوم</p>
+                    <p class="Quick-access-p">ثمرة الحصه القادمة،حل واجب اليوم</p>
                 </div>
                <span class="sr-only">(current)</span>
             </a>
-            
-            
             <a class="Quick-access-link" href="{{ url_for('videos.video_page') }}" style="text-decoration: none;color: black;">
                 <div class="Quick-access-box">
                     <img style="width:280px;height:180px;margin-left:10px;margin-top: 10px;" src="{{ url_for('static', filename='img/vid.gif') }}" alt="">
@@ -74,29 +70,17 @@
                     <p class="Quick-access-p">شرح جديد</p>
                 </div>
             </a>
-            
-            
-            <a  class="Quick-access-link" href="/app/templetes/External_pages/Revision.html"style="text-decoration: none;color: black;">
+            <a  class="Quick-access-link" href="{{ url_for('courses.get_courses') }}"style="text-decoration: none;color: black;">
                 <div id="oopp" class="Quick-access-box">
                     <img class="Quick-access-img" src="{{ url_for('static', filename='img/rev.png') }}" alt="">
                     <h1  class="Quick-access-h1">الدورات</h1>
                     <p  class="Quick-access-p"> دورات و دروس كل اسبوع</p>
                 </div>
             </a>
-            
-            
-            
         </div>
     </div>
 
-
-
-
-
-
-
-
-    <!-- Footer -->
+<!-- Footer -->
     <footer class="text-center bg-body-tertiary">
         <!-- Grid container -->
         <div class="container pt-4">
@@ -121,7 +105,7 @@
               data-mdb-ripple-color="dark"
               ><i class="fab fa-youtube"></i
             ></a>
-      
+
             <!-- Google -->
             <a
               data-mdb-ripple-init
@@ -130,8 +114,7 @@
               role="button"
               data-mdb-ripple-color="dark"
               ><i class="fab fa-google"></i
-            ></a>
-      
+            ></a>   
             <!-- Instagram -->
             <a
               data-mdb-ripple-init
@@ -141,9 +124,7 @@
               data-mdb-ripple-color="dark"
               ><i class="fab fa-instagram"></i
             ></a>
-      
-
-           
+                
           </section>
           <!-- Section: Social media -->
         </div>
@@ -156,9 +137,6 @@
         </div>
         <!-- Copyright -->
       </footer>
-
-
-
 
       <script src="{{ url_for('static', filename='login/js/popper.min.js') }}"></script>
       <script src="{{ url_for('static', filename='home/js/jquery-3.7.1.min.js') }}"></script>

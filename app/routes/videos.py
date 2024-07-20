@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template, url_for
+from flask import Blueprint, request, jsonify, render_template, url_for, redirect
 from flask_login import login_required, current_user
 from app.models import Video, db
 
@@ -26,7 +26,7 @@ def get_videos():
 @bp.route('/videos/create', methods=['POST'])
 @login_required
 def create_video():
-    data = request.get_json()
+    data = request.form
     video = Video(
         title=data['title'],
         description=data['description'],
@@ -66,7 +66,7 @@ def get_video(video_id):
 def update_video(video_id):
     video = Video.query.get_or_404(video_id)
 
-    data = request.get_json()
+    data = request.form
     video.title = data.get('title', video.title)
     video.description = data.get('description', video.description)
     video.file_path = data.get('file_path', video.file_path)
@@ -75,7 +75,7 @@ def update_video(video_id):
     db.session.commit()
     return jsonify({'message': 'Video updated successfully'}), 200
 
-@bp.route('/videos/<int:video_id>/delete', methods=['DELETE'])
+@bp.route('/videos/<int:video_id>/delete', methods=['POST'])
 @login_required
 def delete_video(video_id):
     video = Video.query.get_or_404(video_id)

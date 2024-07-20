@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, url_for
 from flask_login import login_required, current_user
 from app.models import Assignment, db
 from datetime import datetime
@@ -9,14 +9,7 @@ bp = Blueprint('assignments', __name__)
 @login_required
 def get_assignments():
     assignments = Assignment.query.filter_by(stage=current_user.stage).all()  # Filter by user's stage
-    return jsonify([{
-        'id': a.id,
-        'title': a.title,
-        'description': a.description,
-        'upload_date': a.upload_date.isoformat(),
-        'subject': a.subject,
-        'file_path': a.file_path
-    } for a in assignments]), 200
+    return render_template('External_pages/assignments.html', assignments=assignments)
 
 @bp.route('/assignments', methods=['POST'])
 @login_required
@@ -71,4 +64,5 @@ def update_assignment(assignment_id):
 def delete_assignment(assignment_id):
     assignment = Assignment.query.get_or_404(assignment_id)
     db.session.delete(assignment)
-    db.session.co
+    db.session.commit()
+    return jsonify({'message': 'Assignment deleted successfully'}), 200
