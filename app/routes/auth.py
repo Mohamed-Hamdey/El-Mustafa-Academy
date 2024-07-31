@@ -1,67 +1,90 @@
-from flask import Blueprint, render_template, request, jsonify, url_for
+from flask import Blueprint, render_template, request, jsonify, url_for, redirect
 from flask_login import login_user, current_user, login_required
 from app.models import User, db
 
 bp = Blueprint('auth', __name__)
 
+# Add a 'status' field to the User model to track pending requests
+# status = 'pending', 'approved', 'rejected'
+
 @bp.route('/', methods=['POST'])
 def handle_auth():
     data = request.get_json()
 
-    # Check if the request data includes an email field to determine if it's a registration attempt
     if 'email' in data:  # Registration
-        # Check for existing username
         if User.query.filter_by(username=data['username']).first():
             return jsonify({'message': 'Username already exists'}), 400
 
-        # Check for existing email
         if User.query.filter_by(email=data['email']).first():
             return jsonify({'message': 'Email already exists'}), 400
 
-        # Create a new user
         user = User(
             username=data['username'],
             email=data['email'],
             stage=data.get('stage'),
-            phone_number=data.get('phone_number')
+            phone_number=data.get('phone_number'),
+            status='pending'  # Mark as pending
         )
         user.set_password(data['password'])
 
-        # Save the user to the database
         db.session.add(user)
         db.session.commit()
 
-        # Log the user in
-        login_user(user)
-
-        return jsonify({'message': 'User registered successfully', 'redirect': url_for('auth.home')}), 201
+        return jsonify({'message': 'User registered successfully, pending approval'}), 201
 
     else:  # Login
-        # Ensure that both username and password are provided
         if 'username' not in data or 'password' not in data:
             return jsonify({'message': 'Username and password are required'}), 400
 
         user = User.query.filter_by(username=data['username']).first()
 
         if user and user.check_password(data['password']):
-            login_user(user)
-
-            # Redirect logic based on username
-            if user.username == 'mohamed_mostafa_':
-                return jsonify({'message': 'Login successful', 'redirect': url_for('auth.dashboard')}), 200
+            if user.status == 'approved':
+                login_user(user)
+                if user.username == 'mohamed_mostafa_':
+                    return jsonify({'message': 'Login successful', 'redirect': url_for('auth.dashboard')}), 200
+                else:
+                    return jsonify({'message': 'Login successful', 'redirect': url_for('auth.home')}), 200
             else:
-                return jsonify({'message': 'Login successful', 'redirect': url_for('auth.home')}), 200
+                return jsonify({'message': 'Your account is not approved yet'}), 403
         else:
             return jsonify({'message': 'Invalid username or password'}), 401
-
 
 @bp.route('/home/')
 @login_required
 def home():
     return render_template('Home.html')
 
-
 @bp.route('/dashboard/')
 @login_required
 def dashboard():
     return render_template('dashboard.html')
+
+@bp.route('/pending_requests/')
+@login_required
+def pending_requests():
+    if current_user.username == 'mohamed_mostafa_':  # Only allow the teacher to view pending requests
+        pending_users = User.query.filter_by(status='pending').all()
+        return render_template('pending_requests.html', pending_users=pending_users)
+    else:
+        return redirect(url_for('auth.home'))
+
+@bp.route('/handle_request/', methods=['POST'])
+@login_required
+def handle_request():
+    if current_user.username == 'mohamed_mostafa_':
+        data = request.get_json()
+        user = User.query.get(data['user_id'])
+
+        if data['action'] == 'accept':
+            user.status = 'approved'
+            db.session.commit()
+            return jsonify({'message': 'User approved successfully'})
+        elif data['action'] == 'reject':
+            db.session.delete(user)
+            db.session.commit()
+            return jsonify({'message': 'User rejected and deleted successfully'})
+        else:
+            return jsonify({'message': 'Invalid action'}), 400
+    else:
+        return jsonify({'message': 'Unauthorized'}), 403

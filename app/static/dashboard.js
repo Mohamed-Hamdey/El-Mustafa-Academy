@@ -210,3 +210,84 @@ document.getElementById('category-files-upload-form').addEventListener('submit',
         document.getElementById('category-file-upload-success').classList.add('d-none');
     }
 });
+function openNewWindow(username, email, userId) {
+    const newWindow = window.open("", "_blank", "width=400,height=300");
+
+    if (newWindow) {
+        newWindow.document.write(`
+            <html>
+            <head>
+                <title>Request Details</title>
+                <style>
+                    .request-bar {
+                        padding: 10px;
+                        background-color: #f0f0f0;
+                        border-bottom: 1px solid #ccc;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                    }
+                    .request-name {
+                        font-weight: bold;
+                    }
+                    .buttons {
+                        display: flex;
+                        gap: 10px;
+                    }
+                    button {
+                        padding: 5px 10px;
+                        cursor: pointer;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="request-bar">
+                    <span class="request-name">${username} (${email})</span>
+                    <div class="buttons">
+                        <button onclick="handleAccept(${userId})">Accept</button>
+                        <button onclick="handleReject(${userId})">Reject</button>
+                    </div>
+                </div>
+                <script>
+                    function handleAccept(userId) {
+                        fetch('/handle_request/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ user_id: userId, action: 'accept' })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message);
+                            window.close();
+                            opener.location.reload(); // Refresh the parent window
+                        })
+                        .catch(error => console.error('Error:', error));
+                    }
+
+                    function handleReject(userId) {
+                        fetch('/handle_request/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ user_id: userId, action: 'reject' })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message);
+                            window.close();
+                            opener.location.reload(); // Refresh the parent window
+                        })
+                        .catch(error => console.error('Error:', error));
+                    }
+                </script>
+            </body>
+            </html>
+        `);
+    } else {
+        alert('Popup blocked. Please allow popups for this website.');
+    }
+}
+

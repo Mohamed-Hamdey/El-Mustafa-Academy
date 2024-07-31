@@ -80,7 +80,7 @@
     <section id="sidebar">
         <a href="#" class="brand">
             <i class='bx bxs-smile'></i>
-            <span class="text">Admin</span>
+            <span class="text">MOHAMED MOSTAFA</span>
         </a>
         <ul class="side-menu top">
             <li class="active">
@@ -90,25 +90,25 @@
                 </a>
             </li>
             <li>
-                <a href="#" id="videos-section">
+                <a href="#upload-video-modal" id="videos-section">
                     <i class='bx bxs-video'></i>
                     <span class="text">My Videos</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="#assignments-upload-section">
                     <i class='bx bxs-doughnut-chart'></i>
                     <span class="text">Assignments</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="#files-upload-section">
                     <i class='bx bxs-message-dots'></i>
                     <span class="text">Files</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="#" onclick="openNewWindow(); return false;">
                     <i class='bx bxs-message-dots'></i>
                     <span class="text">Requests</span>
                 </a>
@@ -141,8 +141,7 @@
             <input type="checkbox" id="switch-mode" hidden>
             <label for="switch-mode" class="switch-mode"></label>
             <a href="#" class="notification">
-                <i class='bx bxs-bell'></i>
-                <span class="num">8</span>
+
             </a>
             <a href="#" class="profile">
                 <img src="c:\Users\NoteBook\Documents\work\adminhub-master\img\Annotation 2024-03-17 065933.png">
@@ -229,6 +228,12 @@
             <option value="geo">Geography</option>
             <!-- Add more courses here if needed -->
         </select>
+        <select id="video-stage-select" required>
+            <option value="" disabled selected>Select a Stage</option>
+            <option value="first-grade">First Grade</option>
+            <option value="second-grade">Second Grade</option>
+            <option value="third-grade">Third Grade</option>
+        </select>
 
         <input type="file" id="video-file" accept="video/*" required>
         <button type="submit">Upload Video</button>
@@ -265,6 +270,36 @@
     </form>
     <div id="assignment-upload-error" class="alert alert-danger d-none">Error uploading assignment!</div>
     <div id="assignment-upload-success" class="alert alert-success d-none">Assignment uploaded successfully!</div>
+</div>
+<!-- files Upload -->
+<div id="files-upload-section" class="upload-section">
+    <h2>Upload files</h2>
+    <form id="assignments-upload-form">
+        <input type="text" id="files-title" placeholder="file Title" required>
+        <input type="text" id="files-description" placeholder="file Description" required>
+        
+        <!-- Dropdown for selecting a course -->
+        <select id="file-course-select" required>
+            <option value="" disabled selected>Select a Course</option>
+            <option value="bio">Biology</option>
+            <option value="geo">Geography</option>
+            <!-- Add more courses here if needed -->
+        </select>
+
+        <!-- Dropdown for selecting a stage -->
+        <select id="file-stage-select" required>
+            <option value="" disabled selected>Select a Stage</option>
+            <option value="first-grade">First Grade</option>
+            <option value="second-grade">Second Grade</option>
+            <option value="third-grade">Third Grade</option>
+        </select>
+
+        <!-- Accept only PDF files -->
+        <input type="file" id="file-file" accept=".pdf" required>
+        <button type="submit">Upload file</button>
+    </form>
+    <div id="file-upload-error" class="alert alert-danger d-none">Error uploading file!</div>
+    <div id="file-upload-success" class="alert alert-success d-none">Assignment uploaded file!</div>
 </div>
 <!-- Courses Upload Modal -->
 <div class="modal fade" id="uploadCourseModal" tabindex="-1" role="dialog" aria-labelledby="uploadCourseModalLabel" aria-hidden="true">
@@ -459,6 +494,7 @@ document.getElementById('exam-upload-form').addEventListener('submit', function(
         alert('Error uploading exam');
     });
 });
+
     </script>
     <script src="{{ url_for('static', filename='External/video/js/upload.js') }}"></script>
 

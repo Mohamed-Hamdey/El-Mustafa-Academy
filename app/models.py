@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128), nullable=False)
     stage = db.Column(db.String(50), nullable=False)  # This field should be non-nullable if required
     phone_number = db.Column(db.String(15), nullable=True)
-
+    status = db.Column(db.String(20), default='pending')
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
