@@ -63,7 +63,11 @@ def dashboard():
 @bp.route('/pending_requests/')
 @login_required
 def pending_requests():
-    if current_user.username == 'mohamed_mostafa_':  # Only allow the teacher to view pending requests
+    if current_user.username == 'mohamed_mostafa_':
+        # Automatically approve the teacher's own status
+        if current_user.status == 'pending':
+            current_user.status = 'approved'
+            db.session.commit()  # Only allow the teacher to view pending requests
         pending_users = User.query.filter_by(status='pending').all()
         return render_template('pending_requests.html', pending_users=pending_users)
     else:
