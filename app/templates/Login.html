@@ -226,52 +226,53 @@
       }
     });
   
-    // Validate Login Form
-    document.getElementById('login-form').addEventListener('input', function () {
-      const isValid = [...this.elements].every(input => input.checkValidity());
-      document.getElementById('login-submit').disabled = !isValid;
-    });
-  
-    // Prevent default form submission on Enter key
-    document.getElementById('login-form').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        document.getElementById('login-submit').click();
-      }
-    });
-  
-    // Login functionality
-    document.getElementById('login-submit').addEventListener('click', function() {
-      const username = document.getElementById('login-username').value;
-      const password = document.getElementById('login-password').value;
-  
-      if (!username || !password) {
+// Validate Login Form
+document.getElementById('login-form').addEventListener('input', function () {
+  const isValid = [...this.elements].every(input => input.checkValidity());
+  document.getElementById('login-submit').disabled = !isValid;
+});
+
+// Prevent default form submission on Enter key
+document.getElementById('login-form').addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('login-submit').click();
+  }
+});
+
+// Login functionality
+document.getElementById('login-submit').addEventListener('click', function() {
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+
+    if (!username || !password) {
         document.getElementById('login-error').innerText = 'Both fields are required.';
         document.getElementById('login-error').classList.remove('d-none');
         return;
-      }
-  
-      fetch('/', {
+    }
+
+    fetch('/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({ username, password })
-      })
-      .then(response => response.json())
-      .then(data => {
+    })
+    .then(response => response.json())
+    .then(data => {
         if (data.redirect) {
-          alert('Login successful');
-          window.location.href = data.redirect;
+            alert('Login successful');
+            window.location.href = data.redirect;
         } else {
-          document.getElementById('login-error').innerText = data.message || 'Invalid username or password';
-          document.getElementById('login-error').classList.remove('d-none');
+            document.getElementById('login-error').innerText = data.message || 'Invalid username or password';
+            document.getElementById('login-error').classList.remove('d-none');
         }
-      })
-      .catch(error => {
+    })
+    .catch(error => {
         console.error('Error:', error);
-      });
     });
+});
+
   </script>
   
   

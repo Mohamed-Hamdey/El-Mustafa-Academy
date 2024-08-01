@@ -4,13 +4,10 @@ from app.models import User, db
 
 bp = Blueprint('auth', __name__)
 
-# Add a 'status' field to the User model to track pending requests
-# status = 'pending', 'approved', 'rejected'
-
 @bp.route('/', methods=['POST'])
 def handle_auth():
     data = request.get_json()
-
+    
     if 'email' in data:  # Registration
         if User.query.filter_by(username=data['username']).first():
             return jsonify({'message': 'Username already exists'}), 400
@@ -39,15 +36,30 @@ def handle_auth():
         user = User.query.filter_by(username=data['username']).first()
 
         if user and user.check_password(data['password']):
+            print("User status before approval:", user.status)
+
+            # Directly log in 'mohamed_mostafa_' and redirect to the dashboard
+            if user.username == 'mohamed_mostafa_':
+                login_user(user)
+                return jsonify({'redirect': url_for('auth.dashboard')}), 200
+
+            # Automatically approve the user if their status is pending
+            if user.status == 'pending':
+                user.status = 'approved'
+                db.session.commit()
+                # Reload the user object from the database to ensure status is updated
+                user = User.query.filter_by(username=data['username']).first()
+                print("User status after approval:", user.status)
+
+            # Check the updated status for other users
             if user.status == 'approved':
                 login_user(user)
-                if user.username == 'mohamed_mostafa_':
-                    return jsonify({'message': 'Login successful', 'redirect': url_for('auth.dashboard')}), 200
-                else:
-                    return jsonify({'message': 'Login successful', 'redirect': url_for('auth.home')}), 200
+                return jsonify({'redirect': url_for('auth.home')}), 200
             else:
+                print("Account not approved yet")
                 return jsonify({'message': 'Your account is not approved yet'}), 403
         else:
+            print("Invalid username or password")
             return jsonify({'message': 'Invalid username or password'}), 401
 
 @bp.route('/home/')
