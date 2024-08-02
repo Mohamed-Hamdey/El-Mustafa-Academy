@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>El-Mustafa Academy</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='login/stud-Login.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='login/css/bootstrap.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=El+Messiri:wght@400..700&display=swap" rel="stylesheet">
@@ -19,9 +19,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-light bg-light">
     <div style="display: flex; gap: 20px;">
-      <a href="/app/templetes/stud-Login.html">
         <img id="img-nav" src="{{ url_for('static', filename='img/3MS.png') }}" alt="">
-      </a>
       <div class="dropdown">
         <button style="margin-top: 7px; width: 310px; border-radius: 8px;" class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           خبرات سابقه 
@@ -368,9 +366,9 @@ document.getElementById('login-submit').addEventListener('click', function() {
 </footer>
   
 
-<script src="{{ url_for('static', filename='login/js/popper.min.js') }}"></script>
-<script src="{{ url_for('static', filename='login/js/jquery-3.7.1.min.js') }}"></script>
-<script src="{{ url_for('static', filename='login/js/bootstrap.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
 <script src="{{ url_for('static', filename='login/stud-Login.js') }}"></script>
 </body>
 </html> 

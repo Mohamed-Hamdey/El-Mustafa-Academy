@@ -67,6 +67,9 @@ body {
 #sidebar::--webkit-scrollbar {
 	display: none;
 }
+#sidebar .text{
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 #sidebar.hide {
 	width: 60px;
 }
@@ -82,7 +85,6 @@ body {
 	left: 0;
 	background: var(--light);
 	z-index: 500;
-	padding-bottom: 20px;
 	box-sizing: content-box;
 }
 #sidebar .brand .bx {
@@ -272,10 +274,9 @@ body {
 	align-items: center;
 }
 #content nav .profile img {
-	width: 36px;
-	height: 36px;
-	object-fit: cover;
-	border-radius: 50%;
+	width: 100px;
+	object-fit: cover;	
+
 }
 #content nav .switch-mode {
 	display: block;
@@ -313,6 +314,7 @@ body {
 	font-family: var(--poppins);
 	max-height: calc(100vh - 56px);
 	overflow-y: auto;
+
 }
 #content main .head-title {
 	display: flex;
@@ -621,6 +623,9 @@ body {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
+	text-align: right;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	
 }
 
 .video-upload-section button {
@@ -641,6 +646,8 @@ body {
     margin-top: 15px;
     padding: 10px;
     border-radius: 4px;
+	text-align: right;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .alert-danger {
@@ -653,6 +660,8 @@ body {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
+	text-align: right;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .d-none {
@@ -687,6 +696,9 @@ body {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	text-align: right;
+
 }
 
 .upload-section button {

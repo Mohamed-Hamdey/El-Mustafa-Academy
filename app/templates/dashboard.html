@@ -78,8 +78,8 @@
 
     <!-- SIDEBAR -->
     <section id="sidebar">
-        <a href="#" class="brand">
-            <i class='bx bxs-smile'></i>
+        <a style="margin-top: 30px;" href="#" class="brand">
+            <i class='bx bxs-home'></i>
             <span class="text">MOHAMED MOSTAFA</span>
         </a>
         <ul class="side-menu top">
@@ -92,25 +92,25 @@
             <li>
                 <a href="#upload-video-modal" id="videos-section">
                     <i class='bx bxs-video'></i>
-                    <span class="text">My Videos</span>
+                    <span class="text">الفيديوهات</span>
                 </a>
             </li>
             <li>
                 <a href="#assignments-upload-section">
                     <i class='bx bxs-doughnut-chart'></i>
-                    <span class="text">Assignments</span>
+                    <span class="text">الواجبات</span>
                 </a>
             </li>
             <li>
                 <a href="#files-upload-section">
                     <i class='bx bxs-message-dots'></i>
-                    <span class="text">Files</span>
+                    <span class="text">الامتحانات</span>
                 </a>
             </li>
             <li>
                 <a href="#" onclick="openNewWindow(); return false;">
                     <i class='bx bxs-message-dots'></i>
-                    <span class="text">Requests</span>
+                    <span class="text">قبول الطلاب  الجدد</span>
                 </a>
             </li>
 
@@ -119,7 +119,7 @@
             <li>
                 <a href="{ url_for(__init__.index) }" class="logout">
                     <i class='bx bxs-log-out-circle'></i>
-                    <span class="text">Logout</span>
+                    <span class="text">خروج</span>
                 </a>
             </li>
         </ul>
@@ -144,7 +144,7 @@
 
             </a>
             <a href="#" class="profile">
-                <img src="c:\Users\NoteBook\Documents\work\adminhub-master\img\Annotation 2024-03-17 065933.png">
+                <img src="../static/img-dash/3MS.png">
             </a>
         </nav>
         <!-- NAVBAR -->
@@ -216,86 +216,86 @@
     </div>
     <!-- Video Upload Form -->
 <div id="video-upload-section" class="video-upload-section">
-    <h2>Upload Video</h2>
+    <h2>اضافة فيديو جديد</h2>
     <form id="video-upload-form">
-        <input type="text" id="video-title" placeholder="Video Title" required>
-        <input type="text" id="video-description" placeholder="Video Description" required>
+        <input type="text" id="video-title" placeholder="عنوان الفيديو" required>
+        <input type="text" id="video-description" placeholder="وصف الفيديو" required>
         
         <!-- Dropdown for selecting a course -->
         <select id="course-select" required>
-            <option value="" disabled selected>Select a Course</option>
-            <option value="bio">Biology</option>
-            <option value="geo">Geography</option>
+            <option value="" disabled selected>اختر الكورس </option>
+            <option value="bio">احياء</option>
+            <option value="geo">جيولوجيا</option>
             <!-- Add more courses here if needed -->
         </select>
         <select id="video-stage-select" required>
-            <option value="" disabled selected>Select a Stage</option>
-            <option value="first-grade">First Grade</option>
-            <option value="second-grade">Second Grade</option>
-            <option value="third-grade">Third Grade</option>
+            <option value="" disabled selected>اختر المرحله</option>
+            <option value="first-grade">الصف الاول</option>
+            <option value="second-grade">الصف الثاني</option>
+            <option value="third-grade">الصف الثالث</option>
         </select>
 
-        <input type="file" id="video-file" accept="video/*" required>
+        <input type="file" style="width: 100%; text-align: right;" id="video-file"  accept="video/*" required>
         <button type="submit">Upload Video</button>
     </form>
-    <div id="video-upload-error" class="alert alert-danger d-none">Error uploading video!</div>
-    <div id="video-upload-success" class="alert alert-success d-none">Video uploaded successfully!</div>
+    <div id="video-upload-error" class="alert alert-danger d-none">خطأ في رفع الفيديو ؟</div>
+    <div id="video-upload-success" class="alert alert-success d-none">تم رفع الفيديو بنجاح</div>
 </div>
 <!-- Assignments Upload -->
 <div id="assignments-upload-section" class="upload-section">
-    <h2>Upload Assignment</h2>
+    <h2>اضافة الواجب</h2>
     <form id="assignments-upload-form">
-        <input type="text" id="assignment-title" placeholder="Assignment Title" required>
-        <input type="text" id="assignment-description" placeholder="Assignment Description" required>
+        <input type="text" id="assignment-title" placeholder="العنوان" required>
+        <input type="text" id="assignment-description" placeholder="الوصف" required>
         
         <!-- Dropdown for selecting a course -->
         <select id="assignment-course-select" required>
-            <option value="" disabled selected>Select a Course</option>
-            <option value="bio">Biology</option>
-            <option value="geo">Geography</option>
+            <option value="" disabled selected>اختر الكورس</option>
+            <option value="bio">اجياء</option>
+            <option value="geo">جيولوجيا</option>
             <!-- Add more courses here if needed -->
         </select>
 
         <!-- Dropdown for selecting a stage -->
         <select id="assignment-stage-select" required>
-            <option value="" disabled selected>Select a Stage</option>
-            <option value="first-grade">First Grade</option>
-            <option value="second-grade">Second Grade</option>
-            <option value="third-grade">Third Grade</option>
+            <option value="" disabled selected>اختر المرحله</option>
+            <option value="first-grade">الصف الاول</option>
+            <option value="second-grade">الصف الثاني</option>
+            <option value="third-grade">الصف الثالث</option>
         </select>
 
         <!-- Accept only PDF files -->
-        <input type="file" id="assignment-file" accept=".pdf" required>
+        <input type="file" style="width: 100%;" id="assignment-file" accept=".pdf" required>
         <button type="submit">Upload Assignment</button>
     </form>
-    <div id="assignment-upload-error" class="alert alert-danger d-none">Error uploading assignment!</div>
-    <div id="assignment-upload-success" class="alert alert-success d-none">Assignment uploaded successfully!</div>
+    <div id="assignment-upload-error" class="alert alert-danger d-none">خطأ في رفع الواجب..؟</div>
+    <div id="assignment-upload-success" class="alert alert-success d-none">تم بنجاح</div>
 </div>
 <!-- files Upload -->
 <div id="files-upload-section" class="upload-section">
-    <h2>Upload files</h2>
+    <h2>رفع الامتحانات</h2>
     <form id="assignments-upload-form">
-        <input type="text" id="files-title" placeholder="file Title" required>
-        <input type="text" id="files-description" placeholder="file Description" required>
+        <input type="text" id="files-title" placeholder="العنوان" required>
+        <input type="text" id="files-description" placeholder="الوصف" required>
         
         <!-- Dropdown for selecting a course -->
         <select id="file-course-select" required>
-            <option value="" disabled selected>Select a Course</option>
-            <option value="bio">Biology</option>
-            <option value="geo">Geography</option>
+            <option value="" disabled selected>اختر الكورس</option>
+            <option value="bio">احياء </option>
+            <option value="geo">جيولوجيا</option>
             <!-- Add more courses here if needed -->
         </select>
 
         <!-- Dropdown for selecting a stage -->
         <select id="file-stage-select" required>
-            <option value="" disabled selected>Select a Stage</option>
-            <option value="first-grade">First Grade</option>
-            <option value="second-grade">Second Grade</option>
-            <option value="third-grade">Third Grade</option>
+            <option value="" disabled selected>اختر المرحلة</option>
+            <option value="first-grade">الصف الاول</option>
+            <option value="second-grade">الصف الثاني</option>
+            <option value="third-grade">الصف الثالث</option>
         </select>
 
         <!-- Accept only PDF files -->
-        <input type="file" id="file-file" accept=".pdf" required>
+        <input type="file" style="width: 100%;" id="file-file" accept=".pdf" required>
         <button type="submit">Upload file</button>
     </form>
     <div id="file-upload-error" class="alert alert-danger d-none">Error uploading file!</div>
@@ -496,7 +496,6 @@ document.getElementById('exam-upload-form').addEventListener('submit', function(
 });
 
     </script>
-    <script src="{{ url_for('static', filename='External/video/js/upload.js') }}"></script>
 
 </body>
 </html>
