@@ -5,30 +5,30 @@
     <title>Exam Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='External/Exam.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-      .exams-container {
-          background-color: #f8f9fa;
-          padding: 30px;
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
-      .exam-item {
-          margin-bottom: 20px;
-      }
-      .exam-item h2 {
-          font-size: 1.5rem;
-          color: #007bff;
-      }
-      .exam-item p {
-          margin: 5px 0;
-      }
-      .exam-item strong {
-          color: #343a40;
-      }
-  </style>
+        .exams-container {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .exam-item {
+            margin-bottom: 20px;
+        }
+        .exam-item h2 {
+            font-size: 1.5rem;
+            color: #007bff;
+        }
+        .exam-item p {
+            margin: 5px 0;
+        }
+        .exam-item strong {
+            color: #343a40;
+        }
+    </style>
 </head>
 <body>
     <!-- navbar -->
@@ -46,10 +46,67 @@
                         <p><strong>Subject:</strong> {{ exam.subject }}</p>
                         <p><strong>Uploaded on:</strong> {{ exam.upload_date }}</p>
                         <a href="{{ url_for('static', filename=exam.file_path) }}" class="btn btn-primary" download>Download Exam</a>
+
+                        <!-- New Feature: Take Exam -->
+                        <h3 class="mt-3">Take the Exam</h3>
+                        <form action="{{ url_for('submit_exam', exam_id=exam.id) }}" method="POST">
+                            {% for question in exam.questions %}
+                                <div class="mb-3">
+                                    <p><strong>{{ loop.index }}. {{ question.question_text }}</strong></p>
+                                    {% for choice in question.choices %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="question_{{ question.id }}" value="{{ choice.choice_text }}" required>
+                                            <label class="form-check-label">{{ choice.choice_text }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-success">Submit Exam</button>
+                        </form>
+
+                        <!-- New Feature: View Results -->
+                        {% if exam_results %}
+                            <div class="alert alert-info mt-3">
+                                <strong>Your Score:</strong> {{ exam_results[exam.id] }}%
+                            </div>
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>
         </div>
+
+        <!-- New Feature: Add New Exam -->
+        {% if current_user.is_teacher %}
+        <div class="exams-container mt-5">
+            <h2>Add New Exam</h2>
+            <form action="{{ url_for('add_exam') }}" method="POST">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Exam Title</label>
+                    <input type="text" class="form-control" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" name="description"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Subject</label>
+                    <select class="form-control" name="subject" required>
+                        <option value="bio">Biology</option>
+                        <option value="geo">Geology</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="stage" class="form-label">Stage</label>
+                    <select class="form-control" name="stage" required>
+                        <option value="first-grade">First Grade</option>
+                        <option value="second-grade">Second Grade</option>
+                        <option value="third-grade">Third Grade</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Exam</button>
+            </form>
+        </div>
+        {% endif %}
     </div>
     
     {% include 'footer.html'%}

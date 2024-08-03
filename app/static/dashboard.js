@@ -120,76 +120,137 @@ document.getElementById('videos-section').addEventListener('click', function () 
     window.location.href = "#video-list";  // Scroll to video list section
 });
 
-document.getElementById('add-course-form').addEventListener('submit', async function (event) {
+// Course Upload Form
+document.getElementById('course-upload-form').addEventListener('submit', function(event) {
     event.preventDefault();
-    
-    const courseName = document.getElementById('course-name').value;
-    const courseDescription = document.getElementById('course-description').value;
 
-    const response = await fetch('/courses/create', {
+    let formData = new FormData();
+    formData.append('title', document.getElementById('course-title').value);
+    formData.append('description', document.getElementById('course-description').value);
+    formData.append('subject', document.getElementById('course-subject').value);
+    formData.append('stage', document.getElementById('course-stage').value);
+    formData.append('file', document.getElementById('course-file').files[0]);
+
+    fetch('/api/courses', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name: courseName, description: courseDescription })
+        body: formData,
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to upload course');
+        }
+    })
+    .then(data => {
+        alert('Course uploaded successfully');
+        $('#uploadCourseModal').modal('hide');
+        addCourseToList(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error uploading course');
     });
-
-    const data = await response.json();
-    if (response.ok) {
-        document.getElementById('add-course-success').innerText = data.message;
-        document.getElementById('add-course-success').classList.remove('d-none');
-        document.getElementById('course-name').value = ''; 
-        document.getElementById('course-description').value = ''; 
-        document.getElementById('add-course-modal').style.display = 'none';  // Close the modal
-    } else {
-        document.getElementById('add-course-error').innerText = data.message;
-        document.getElementById('add-course-error').classList.remove('d-none');
-    }
 });
-// Handle form submission
-document.getElementById('video-upload-form').addEventListener('submit', function (e) {
+
+function addCourseToList(course) {
+    const courseList = document.getElementById('courses-list');
+    const courseItem = document.createElement('li');
+    courseItem.className = 'list-group-item';
+    courseItem.textContent = `${course.title} - ${course.description}`;
+    courseList.appendChild(courseItem);
+}
+
+// Assignments Upload Form
+document.getElementById('assignments-upload-form').addEventListener('submit', async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('title', document.getElementById('assignment-title').value);
+    formData.append('description', document.getElementById('assignment-description').value);
+    formData.append('subject', document.getElementById('assignment-course-select').value);
+    formData.append('stage', document.getElementById('assignment-stage-select').value);
+    formData.append('file_path', document.getElementById('assignment-file').files[0]);
 
-    // Check that a course is selected
-    const course = document.getElementById('course-select').value;
-    if (!course) {
-        alert('Please select a course.');
-        return;
-    }
+    try {
+        const response = await fetch('/assignments', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrf-token]').content
+            }
+        });
 
-    // Simulate video upload logic
-    let success = true; // Simulate success or failure
-    if (success) {
-        document.getElementById('video-upload-success').classList.remove('d-none');
-        document.getElementById('video-upload-error').classList.add('d-none');
-        
-    } else {
-        document.getElementById('video-upload-error').classList.remove('d-none');
-        document.getElementById('video-upload-success').classList.add('d-none');
-    }
-});
-// Handle form submission for assignments
-document.getElementById('assignments-upload-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    // Check that a course is selected
-    const course = document.getElementById('assignment-course-select').value;
-    if (!course) {
-        alert('Please select a course.');
-        return;
-    }
-
-    // Simulate assignment upload logic
-    let success = true; // Simulate success or failure
-    if (success) {
-        document.getElementById('assignment-upload-success').classList.remove('d-none');
-        document.getElementById('assignment-upload-error').classList.add('d-none');
-    } else {
+        if (response.ok) {
+            document.getElementById('assignment-upload-success').classList.remove('d-none');
+            document.getElementById('assignment-upload-error').classList.add('d-none');
+        } else {
+            throw new Error('Failed to upload assignment');
+        }
+    } catch (error) {
         document.getElementById('assignment-upload-error').classList.remove('d-none');
         document.getElementById('assignment-upload-success').classList.add('d-none');
     }
 });
-// Handle form submission for category files
+
+// Exam Upload Form
+document.getElementById('exam-upload-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    let formData = new FormData();
+    formData.append('title', document.getElementById('exam-title').value);
+    formData.append('description', document.getElementById('exam-description').value);
+    formData.append('subject', document.getElementById('exam-subject').value);
+    formData.append('stage', document.getElementById('exam-stage').value);
+
+    let questions = [];
+    document.querySelectorAll('.question-group').forEach(group => {
+        let question = {
+            question_text: group.querySelector('.question-text').value,
+            correct_answer: group.querySelector('.correct-answer').value,
+            choices: Array.from(group.querySelectorAll('.choice-text'), choiceInput => choiceInput.value)
+        };
+        questions.push(question);
+    });
+    formData.append('questions', JSON.stringify(questions));
+
+    fetch('/api/exams', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to upload exam');
+        }
+    })
+    .then(data => {
+        alert('Exam uploaded successfully');
+        $('#uploadExamModal').modal('hide');
+        window.location.reload();
+    })
+    .catch(error => {
+        alert(error.message);
+    });
+});
+
+// Add Question Button
+document.querySelector('.add-question-btn').addEventListener('click', function() {
+    let questionGroup = document.querySelector('.question-group').cloneNode(true);
+    questionGroup.querySelectorAll('input').forEach(input => input.value = '');
+    document.getElementById('questions-section').appendChild(questionGroup);
+});
+
+// Add Choice Button
+document.querySelector('.add-choice-btn').addEventListener('click', function() {
+    let choiceInput = document.createElement('input');
+    choiceInput.setAttribute('type', 'text');
+    choiceInput.setAttribute('class', 'form-control choice-text');
+    choiceInput.setAttribute('placeholder', 'Enter choice');
+    this.parentNode.insertBefore(choiceInput, this);
+});
+
+// Handle Form Submission for Category Files
 document.getElementById('category-files-upload-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -210,6 +271,7 @@ document.getElementById('category-files-upload-form').addEventListener('submit',
         document.getElementById('category-file-upload-success').classList.add('d-none');
     }
 });
+
 function openNewWindow(username, email, userId) {
     const newWindow = window.open("", "_blank", "width=400,height=300");
 
@@ -290,4 +352,3 @@ function openNewWindow(username, email, userId) {
         alert('Popup blocked. Please allow popups for this website.');
     }
 }
-

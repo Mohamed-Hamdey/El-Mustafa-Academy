@@ -1,0 +1,47 @@
+<section id="sidebar">
+    <a style="margin-top: 30px;" href="#" class="brand">
+        <i class='bx bxs-home'></i>
+        <span class="text">MOHAMED MOSTAFA</span>
+    </a>
+    <ul class="side-menu top">
+        <li class="active">
+            <a href="#">
+                <i class='bx bxs-dashboard'></i>
+                <span class="text">Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="#upload-video-modal" id="videos-section">
+                <i class='bx bxs-video'></i>
+                <span class="text">الفيديوهات</span>
+            </a>
+        </li>
+        <li>
+            <a href="#assignments-upload-section">
+                <i class='bx bxs-doughnut-chart'></i>
+                <span class="text">الواجبات</span>
+            </a>
+        </li>
+        <li>
+            <a href="#files-upload-section">
+                <i class='bx bxs-message-dots'></i>
+                <span class="text">الامتحانات</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" onclick="openNewWindow(); return false;">
+                <i class='bx bxs-message-dots'></i>
+                <span class="text">قبول الطلاب  الجدد</span>
+            </a>
+        </li>
+
+    </ul>
+    <ul class="side-menu">
+        <li>
+            <a href="{{ url_for('index') }}" class="logout">
+                <i class='bx bxs-log-out-circle'></i>
+                <span class="text">خروج</span>
+            </a>
+        </li>
+    </ul>
+</section>
