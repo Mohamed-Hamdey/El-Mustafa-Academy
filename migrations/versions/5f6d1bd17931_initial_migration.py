@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 41b2652131cd
+Revision ID: 5f6d1bd17931
 Revises: 
-Create Date: 2024-07-20 01:06:45.701776
+Create Date: 2024-08-09 09:14:52.009267
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '41b2652131cd'
+revision = '5f6d1bd17931'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,6 +25,7 @@ def upgrade():
     sa.Column('password_hash', sa.String(length=128), nullable=False),
     sa.Column('stage', sa.String(length=50), nullable=False),
     sa.Column('phone_number', sa.String(length=15), nullable=True),
+    sa.Column('status', sa.String(length=20), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
@@ -34,7 +35,7 @@ def upgrade():
     sa.Column('title', sa.String(length=100), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('subject', sa.Enum('bio', 'geo', name='subject_enum'), nullable=False),
-    sa.Column('stage', sa.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False),
+    sa.Column('stage', sa.Enum('first', 'second', 'third', name='stage_enum'), nullable=False),
     sa.Column('file_path', sa.String(length=255), nullable=False),
     sa.Column('upload_date', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -46,7 +47,7 @@ def upgrade():
     sa.Column('title', sa.String(length=100), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('subject', sa.Enum('bio', 'geo', name='subject_enum'), nullable=False),
-    sa.Column('stage', sa.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False),
+    sa.Column('stage', sa.Enum('first', 'second', 'third', name='stage_enum'), nullable=False),
     sa.Column('file_path', sa.String(length=255), nullable=False),
     sa.Column('upload_date', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -58,8 +59,7 @@ def upgrade():
     sa.Column('title', sa.String(length=100), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('subject', sa.Enum('bio', 'geo', name='subject_enum'), nullable=False),
-    sa.Column('stage', sa.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False),
-    sa.Column('file_path', sa.String(length=255), nullable=False),
+    sa.Column('stage', sa.Enum('first', 'second', 'third', name='stage_enum'), nullable=False),
     sa.Column('upload_date', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
@@ -70,7 +70,7 @@ def upgrade():
     sa.Column('title', sa.String(length=100), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('subject', sa.Enum('bio', 'geo', name='subject_enum'), nullable=False),
-    sa.Column('stage', sa.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False),
+    sa.Column('stage', sa.Enum('first', 'second', 'third', name='stage_enum'), nullable=False),
     sa.Column('file_path', sa.String(length=255), nullable=False),
     sa.Column('upload_date', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -79,11 +79,43 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('questions',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('exam_id', sa.Integer(), nullable=False),
+    sa.Column('question_text', sa.String(length=255), nullable=False),
+    sa.Column('question_image', sa.String(length=255), nullable=True),
+    sa.Column('correct_answer', sa.String(length=100), nullable=False),
+    sa.Column('correct_answer_image', sa.String(length=255), nullable=True),
+    sa.ForeignKeyConstraint(['exam_id'], ['exams.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('student_responses',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('student_id', sa.Integer(), nullable=False),
+    sa.Column('exam_id', sa.Integer(), nullable=False),
+    sa.Column('score', sa.Integer(), nullable=False),
+    sa.Column('is_started', sa.Boolean(), nullable=True),
+    sa.Column('choices', sa.JSON(), nullable=True),
+    sa.ForeignKeyConstraint(['exam_id'], ['exams.id'], ),
+    sa.ForeignKeyConstraint(['student_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('choices',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('question_id', sa.Integer(), nullable=False),
+    sa.Column('choice_text', sa.String(length=100), nullable=False),
+    sa.Column('choice_image', sa.String(length=255), nullable=True),
+    sa.ForeignKeyConstraint(['question_id'], ['questions.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
+    op.drop_table('choices')
+    op.drop_table('student_responses')
+    op.drop_table('questions')
     op.drop_table('videos')
     op.drop_table('exams')
     op.drop_table('courses')

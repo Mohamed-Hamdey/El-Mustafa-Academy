@@ -43,14 +43,6 @@ def handle_auth():
                 login_user(user)
                 return jsonify({'redirect': url_for('auth.dashboard')}), 200
 
-            # Automatically approve the user if their status is pending
-            if user.status == 'pending':
-                user.status = 'approved'
-                db.session.commit()
-                # Reload the user object from the database to ensure status is updated
-                user = User.query.filter_by(username=data['username']).first()
-                print("User status after approval:", user.status)
-
             # Check the updated status for other users
             if user.status == 'approved':
                 login_user(user)

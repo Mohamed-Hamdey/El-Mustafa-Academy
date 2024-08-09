@@ -18,7 +18,7 @@ def create_app():
     migrate.init_app(app, db)
 
     # Setup LoginManager
-    login_manager.login_view = 'auth.login'
+    login_manager.login_view = 'auth.home'
     login_manager.login_message_category = 'info'
 
     @login_manager.user_loader

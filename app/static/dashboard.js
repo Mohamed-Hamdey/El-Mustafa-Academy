@@ -1,3 +1,86 @@
+let questions = [];
+    
+// Show the modal to add questions
+document.getElementById('uploadButton').addEventListener('click', function() {
+    $('#addQuestionModal').modal('show');
+});
+
+// Add a question to the questions array
+document.getElementById('question-upload-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    addQuestion();
+    document.getElementById('question-upload-form').reset(); // Reset form after adding a question
+});
+
+// Finish adding questions 
+document.getElementById('finishButton').addEventListener('click', function() {
+    $('#addQuestionModal').modal('hide');
+    submitExamToBackend(); // Submit the exam to the backend
+});
+
+// Add a question to the array
+function addQuestion() {
+    const questionText = document.getElementById('question-text').value;
+    const correctAnswer = document.getElementById('correct-answer').value;
+    const choices = [
+        { text: document.getElementById('choice1').value, image: document.getElementById('choice1-image').files[0] || '' },
+        { text: document.getElementById('choice2').value, image: document.getElementById('choice2-image').files[0] || '' },
+        { text: document.getElementById('choice3').value, image: document.getElementById('choice3-image').files[0] || '' },
+        { text: document.getElementById('choice4').value, image: document.getElementById('choice4-image').files[0] || '' }
+    ].filter(choice => choice.text !== "");
+
+    questions.push({
+        questionText,
+        questionImage: document.getElementById('question-image').files[0] || '',
+        correctAnswer,
+        correctAnswerImage: document.getElementById('correct-answer-image').files[0] || '',
+        choices
+    });
+}
+
+// Submit exam data to backend
+function submitExamToBackend() {
+    const formData = new FormData();
+    formData.append('title', document.getElementById('title').value);
+    formData.append('description', document.getElementById('description').value);
+    formData.append('subject', document.getElementById('subject').value);
+    formData.append('stage', document.getElementById('stage').value);
+
+    questions.forEach((q, index) => {
+        formData.append(`questions[${index}][questionText]`, q.questionText);
+        formData.append(`questions[${index}][correctAnswer]`, q.correctAnswer);
+
+        if (q.questionImage) {
+            formData.append(`questions[${index}][questionImage]`, q.questionImage);
+        }
+
+        if (q.correctAnswerImage) {
+            formData.append(`questions[${index}][correctAnswerImage]`, q.correctAnswerImage);
+        }
+
+        q.choices.forEach((choice, choiceIndex) => {
+            formData.append(`questions[${index}][choices][${choiceIndex}][text]`, choice.text);
+            if (choice.image) {
+                formData.append(`questions[${index}][choices][${choiceIndex}][image]`, choice.image);
+            }
+        });
+    });
+
+    fetch('/add_exam', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Exam successfully submitted!');
+        } else {
+            alert('Error submitting exam: ' + data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
 // Sidebar Menu Activation
 const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
 
@@ -326,3 +409,5 @@ function openNewWindow(username, email, userId) {
         alert('Popup blocked. Please allow popups for this website.');
     }
 }
+
+

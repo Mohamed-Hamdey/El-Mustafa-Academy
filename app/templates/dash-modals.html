@@ -1,4 +1,15 @@
 <!-- Video Upload Modal -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
 <div class="modal" id="upload-video-modal">
     <div class="modal-content">
         <span class="close" id="close-upload-video">&times;</span>
@@ -34,13 +45,13 @@
     </select>
     <select id="video-stage-select" required>
         <option value="" disabled selected>اختر المرحله</option>
-        <option value="first-grade">الصف الاول</option>
-        <option value="second-grade">الصف الثاني</option>
-        <option value="third-grade">الصف الثالث</option>
+        <option value="first">الصف الاول</option>
+        <option value="second">الصف الثاني</option>
+        <option value="third">الصف الثالث</option>
     </select>
 
     <input type="file" style="width: 100%; text-align: right;" id="video-file"  accept="video/*" required>
-    <button type="submit">Upload Video</button>
+    <button type="submit">رفع الفيديو</button>
 </form>
 <div id="video-upload-error" class="alert alert-danger d-none">خطأ في رفع الفيديو ؟</div>
 <div id="video-upload-success" class="alert alert-success d-none">تم رفع الفيديو بنجاح</div>
@@ -63,178 +74,111 @@
     <!-- Dropdown for selecting a stage -->
     <select id="assignment-stage-select" required>
         <option value="" disabled selected>اختر المرحله</option>
-        <option value="first-grade">الصف الاول</option>
-        <option value="second-grade">الصف الثاني</option>
-        <option value="third-grade">الصف الثالث</option>
+        <option value="first">الصف الاول</option>
+        <option value="second">الصف الثاني</option>
+        <option value="third">الصف الثالث</option>
     </select>
 
     <!-- Accept only PDF files -->
     <input type="file" style="width: 100%;" id="assignment-file" accept=".pdf" required>
-    <button type="submit">Upload Assignment</button>
+    <button type="submit">رفع الواجب</button>
 </form>
 <div id="assignment-upload-error" class="alert alert-danger d-none">خطأ في رفع الواجب..؟</div>
 <div id="assignment-upload-success" class="alert alert-success d-none">تم بنجاح</div>
 </div>
-<!-- files Upload -->
+<!--  Upload Exams -->
 <div id="files-upload-section" class="upload-section">
-<h2>رفع الامتحانات</h2>
-<form id="assignments-upload-form">
-    <input type="text" id="files-title" placeholder="العنوان" required>
-    <input type="text" id="files-description" placeholder="الوصف" required>
+    <h2>رفع الامتحانات</h2>
+    <form id="assignments-upload-form">
+        <input type="text" id="title" placeholder="العنوان" required>
+        <input type="text" id="description" placeholder="الوصف" required>
+        
+        <!-- Dropdown for selecting a course -->
+        <select id="subject" required>
+            <option value="" disabled selected>اختر الكورس</option>
+            <option value="bio">احياء</option>
+            <option value="geo">جيولوجيا</option>
+            <!-- Add more courses here if needed -->
+        </select>
     
-    <!-- Dropdown for selecting a course -->
-    <select id="file-course-select" required>
-        <option value="" disabled selected>اختر الكورس</option>
-        <option value="bio">احياء </option>
-        <option value="geo">جيولوجيا</option>
-        <!-- Add more courses here if needed -->
-    </select>
-
-    <!-- Dropdown for selecting a stage -->
-    <select id="file-stage-select" required>
-        <option value="" disabled selected>اختر المرحلة</option>
-        <option value="first-grade">الصف الاول</option>
-        <option value="second-grade">الصف الثاني</option>
-        <option value="third-grade">الصف الثالث</option>
-    </select>
-
-    <!-- Accept only PDF files -->
-    <input type="file" style="width: 100%;" id="file-file" accept=".pdf" required>
-    <button type="submit">Upload file</button>
-</form>
-<div id="file-upload-error" class="alert alert-danger d-none">Error uploading file!</div>
-<div id="file-upload-success" class="alert alert-success d-none">Assignment uploaded file!</div>
-</div>
-<!-- Courses Upload Modal -->
-<div class="modal fade" id="uploadCourseModal" tabindex="-1" role="dialog" aria-labelledby="uploadCourseModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="uploadCourseModalLabel">Upload Course</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="course-upload-form" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="course-title">Course Title</label>
-                    <input type="text" class="form-control" id="course-title" placeholder="Enter course title" required>
-                </div>
-                <div class="form-group">
-                    <label for="course-description">Description</label>
-                    <input type="text" class="form-control" id="course-description" placeholder="Enter course description" required>
-                </div>
-                <div class="form-group">
-                    <label for="course-subject">Subject</label>
-                    <select class="form-control" id="course-subject" required>
-                        <option value="" disabled selected>Select subject</option>
-                        <option value="bio">Biology</option>
-                        <option value="geo">Geography</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="course-stage">Stage</label>
-                    <select class="form-control" id="course-stage" required>
-                        <option value="" disabled selected>Select stage</option>
-                        <option value="first-grade">First Grade</option>
-                        <option value="second-grade">Second Grade</option>
-                        <option value="third-grade">Third Grade</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="course-file">Upload Course File</label>
-                    <input type="file" class="form-control" id="course-file" accept=".pdf" required>
-                </div>
-                <button type="submit" class="btn btn-primary mt-3">Upload Course</button>
-            </form>
-        </div>
-    </div>
-</div>
-</div>
-<!-- Exams Upload Modal -->
-<div class="modal fade" id="uploadExamModal" tabindex="-1" role="dialog" aria-labelledby="uploadExamModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="uploadExamModalLabel">Upload Exam</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="exam-upload-form" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="exam-title">Exam Title</label>
-                    <input type="text" class="form-control" id="exam-title" placeholder="Enter exam title" required>
-                </div>
-                <div class="form-group">
-                    <label for="exam-description">Description</label>
-                    <input type="text" class="form-control" id="exam-description" placeholder="Enter exam description" required>
-                </div>
-                <div class="form-group">
-                    <label for="exam-subject">Subject</label>
-                    <select class="form-control" id="exam-subject" required>
-                        <option value="" disabled selected>Select subject</option>
-                        <option value="bio">Biology</option>
-                        <option value="geo">Geography</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="exam-stage">Stage</label>
-                    <select class="form-control" id="exam-stage" required>
-                        <option value="" disabled selected>Select stage</option>
-                        <option value="first-grade">First Grade</option>
-                        <option value="second-grade">Second Grade</option>
-                        <option value="third-grade">Third Grade</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary mt-3">Upload Exam</button>
-            </form>
-        </div>
-    </div>
-</div>
+        <!-- Dropdown for selecting a stage -->
+        <select id="stage" required>
+            <option value="" disabled selected>اختر المرحلة</option>
+            <option value="first">الصف الاول</option>
+            <option value="second">الصف الثاني</option>
+            <option value="third">الصف الثالث</option>
+        </select>
+    
+        <!-- Prepare the exam button -->
+        <button type="button" class="btn btn-primary" id="uploadButton">اعداد الامتحان</button>
+    </form>
+    <div id="file-upload-error" class="alert alert-danger d-none">Error uploading file!</div>
+    <div id="file-upload-success" class="alert alert-success d-none">Assignment uploaded file!</div>
 </div>
 
 <!-- Questions Upload Modal -->
 <div class="modal fade" id="addQuestionModal" tabindex="-1" role="dialog" aria-labelledby="addQuestionModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="addQuestionModalLabel">Add Question</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="question-upload-form">
-                <div class="form-group">
-                    <label for="question-text">Question Text</label>
-                    <input type="text" class="form-control" id="question-text" placeholder="Enter question text" required>
-                </div>
-                <div class="form-group">
-                    <label for="correct-answer">Correct Answer</label>
-                    <input type="text" class="form-control" id="correct-answer" placeholder="Enter correct answer" required>
-                </div>
-                <div class="form-group">
-                    <label for="choice1">Choice 1</label>
-                    <input type="text" class="form-control mb-2 choice-text" id="choice1" placeholder="Choice 1" required>
-                </div>
-                <div class="form-group">
-                    <label for="choice2">Choice 2</label>
-                    <input type="text" class="form-control mb-2 choice-text" id="choice2" placeholder="Choice 2" required>
-                </div>
-                <div class="form-group">
-                    <label for="choice3">Choice 3</label>
-                    <input type="text" class="form-control mb-2 choice-text" id="choice3" placeholder="Choice 3">
-                </div>
-                <div class="form-group">
-                    <label for="choice4">Choice 4</label>
-                    <input type="text" class="form-control mb-2 choice-text" id="choice4" placeholder="Choice 4">
-                </div>
-                <button type="submit" class="btn btn-primary mt-3">Add Question</button>
-            </form>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addQuestionModalLabel">إعداد الامتحان</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="question-upload-form">
+                    <div class="form-group">
+                        <label for="question-text">السؤال</label>
+                        <input type="text" class="form-control" id="question-text" placeholder="Enter question text" required>
+                        <label for="question-image">صورة السؤال (اختياري)</label>
+                        <input type="file" class="form-control-file" id="question-image" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="correct-answer">الإجابة الصحيحة</label>
+                        <input type="text" class="form-control" id="correct-answer" placeholder="Enter correct answer" required>
+                        <label for="correct-answer-image">صورة الإجابة الصحيحة (اختياري)</label>
+                        <input type="file" class="form-control-file" id="correct-answer-image" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="choice1">الاختيار الأول</label>
+                        <input type="text" class="form-control mb-2 choice-text" id="choice1" placeholder="Choice 1" required>
+                        <label for="choice1-image">صورة الاختيار الأول (اختياري)</label>
+                        <input type="file" class="form-control-file" id="choice1-image" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="choice2">الاختيار الثاني</label>
+                        <input type="text" class="form-control mb-2 choice-text" id="choice2" placeholder="Choice 2" required>
+                        <label for="choice2-image">صورة الاختيار الثاني (اختياري)</label>
+                        <input type="file" class="form-control-file" id="choice2-image" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="choice3">الاختيار الثالث</label>
+                        <input type="text" class="form-control mb-2 choice-text" id="choice3" placeholder="Choice 3">
+                        <label for="choice3-image">صورة الاختيار الثالث (اختياري)</label>
+                        <input type="file" class="form-control-file" id="choice3-image" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="choice4">الاختيار الرابع</label>
+                        <input type="text" class="form-control mb-2 choice-text" id="choice4" placeholder="Choice 4">
+                        <label for="choice4-image">صورة الاختيار الرابع (اختياري)</label>
+                        <input type="file" class="form-control-file" id="choice4-image" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">إضافة سؤال</button>
+                </form>
+                <button id="finishButton" class="btn btn-secondary mt-3">إنهاء</button>
+            </div>
         </div>
     </div>
 </div>
+
+<div id="quizContainer" class="hidden">
+    <div id="quizContent"></div>
+    <button id="submitQuiz" class="btn btn-primary mt-3">ارسال الحل</button>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>

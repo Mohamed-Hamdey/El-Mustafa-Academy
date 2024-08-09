@@ -2,7 +2,7 @@ from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
-
+from sqlalchemy import JSON
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -27,7 +27,7 @@ class Assignment(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     subject = db.Column(db.Enum('bio', 'geo', name='subject_enum'), nullable=False)
-    stage = db.Column(db.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False)
+    stage = db.Column(db.Enum('first', 'second', 'third', name='stage_enum'), nullable=False)
     file_path = db.Column(db.String(255), nullable=False)
     upload_date = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
@@ -41,10 +41,9 @@ class Exam(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     subject = db.Column(db.Enum('bio', 'geo', name='subject_enum'), nullable=False)
-    stage = db.Column(db.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False)
+    stage = db.Column(db.Enum('first', 'second', 'third', name='stage_enum'), nullable=False)
     upload_date = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-
     user = db.relationship('User', backref='exams')
     questions = db.relationship('Question', backref='exam', lazy=True)
 
@@ -54,7 +53,9 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     exam_id = db.Column(db.Integer, db.ForeignKey('exams.id'), nullable=False)
     question_text = db.Column(db.String(255), nullable=False)
+    question_image = db.Column(db.String(255), nullable=True)  # For optional image upload
     correct_answer = db.Column(db.String(100), nullable=False)
+    correct_answer_image = db.Column(db.String(255), nullable=True)  # For correct answer image
     choices = db.relationship('Choice', backref='question', lazy=True)
 
 class Choice(db.Model):
@@ -63,6 +64,8 @@ class Choice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_id = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False)
     choice_text = db.Column(db.String(100), nullable=False)
+    choice_image = db.Column(db.String(255), nullable=True)  # For optional choice image
+
 
 class StudentResponse(db.Model):
     __tablename__ = 'student_responses'
@@ -71,7 +74,8 @@ class StudentResponse(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     exam_id = db.Column(db.Integer, db.ForeignKey('exams.id'), nullable=False)
     score = db.Column(db.Integer, nullable=False)
-
+    is_started = db.Column(db.Boolean, default=False)
+    choices = db.Column(db.String(100), nullable=True)
 class Video(db.Model):
     __tablename__ = 'videos'
 
@@ -79,7 +83,7 @@ class Video(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     subject = db.Column(db.Enum('bio', 'geo', name='subject_enum'), nullable=False)
-    stage = db.Column(db.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False)
+    stage = db.Column(db.Enum('first', 'second', 'third', name='stage_enum'), nullable=False)
     file_path = db.Column(db.String(255), nullable=False)
     upload_date = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
@@ -95,7 +99,7 @@ class Course(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     subject = db.Column(db.Enum('bio', 'geo', name='subject_enum'), nullable=False)
-    stage = db.Column(db.Enum('first-grade', 'second-grade', 'third-grade', name='stage_enum'), nullable=False)
+    stage = db.Column(db.Enum('first', 'second', 'third', name='stage_enum'), nullable=False)
     file_path = db.Column(db.String(255), nullable=False)
     upload_date = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
